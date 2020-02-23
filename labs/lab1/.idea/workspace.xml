@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="lab1" targetName="Model3d.out" />
+      <config projectName="lab1" targetName="Teapot.out" />
+    </generated>
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f54dd396-8b58-4297-9f9f-12221639d60c" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ProjectId" id="1Y17JTP6n2mypa3xPDZSgduBtzD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunManager" selected="CMake Application.Teapot.out">
+    <configuration name="Model3d.out" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="lab1" TARGET_NAME="Model3d.out" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="lab1" RUN_TARGET_NAME="Model3d.out">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Teapot.out" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="lab1" TARGET_NAME="Teapot.out" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="lab1" RUN_TARGET_NAME="Teapot.out">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.Model3d.out" />
+      <item itemvalue="CMake Application.Teapot.out" />
+    </list>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f54dd396-8b58-4297-9f9f-12221639d60c" name="Default Changelist" comment="" />
+      <created>1582098175213</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1582098175213</updated>
+      <workItem from="1582098178244" duration="649000" />
+      <workItem from="1582484825592" duration="516000" />
+      <workItem from="1582485630143" duration="508000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1384" y="393" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582484952596">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state x="1384" y="393" key="#com.intellij.execution.impl.EditConfigurationsDialog/408.1463.1920.1177/0.23.2560.1417@0.23.2560.1417" timestamp="1582484952596" />
+    <state width="1238" height="408" key="GridCell.Tab.0.bottom" timestamp="1582485741156">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="1238" height="408" key="GridCell.Tab.0.bottom/408.1463.1920.1177/0.23.2560.1417@0.23.2560.1417" timestamp="1582485741156" />
+    <state width="1238" height="408" key="GridCell.Tab.0.center" timestamp="1582485741155">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="1238" height="408" key="GridCell.Tab.0.center/408.1463.1920.1177/0.23.2560.1417@0.23.2560.1417" timestamp="1582485741155" />
+    <state width="1238" height="408" key="GridCell.Tab.0.left" timestamp="1582485741154">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="1238" height="408" key="GridCell.Tab.0.left/408.1463.1920.1177/0.23.2560.1417@0.23.2560.1417" timestamp="1582485741154" />
+    <state width="1238" height="408" key="GridCell.Tab.0.right" timestamp="1582485741155">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state width="1238" height="408" key="GridCell.Tab.0.right/408.1463.1920.1177/0.23.2560.1417@0.23.2560.1417" timestamp="1582485741155" />
+    <state x="959" y="563" key="com.intellij.ide.util.TipDialog" timestamp="1582484858089">
+      <screen x="0" y="23" width="2560" height="1417" />
+    </state>
+    <state x="959" y="563" key="com.intellij.ide.util.TipDialog/408.1463.1920.1177/0.23.2560.1417@0.23.2560.1417" timestamp="1582484858089" />
+  </component>
+</project>

@@ -1,0 +1,4 @@
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/labs/lab1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/labs/lab1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/labs/lab1/cmake-build-debug/CMakeFiles/Model3d.out.dir
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/labs/lab1/cmake-build-debug/CMakeFiles/Teapot.out.dir

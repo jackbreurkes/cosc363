@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/labs/lab1/Model3D.cpp
+iostream
+-
+fstream
+-
+climits
+-
+math.h
+-
+GLUT/glut.h
+-
+
