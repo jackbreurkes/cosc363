@@ -14,7 +14,7 @@
 #include <fstream>
 #include <climits>
 #include <math.h> 
-#include <GLUT/glut.h>
+#include <GL/freeglut.h>
 using namespace std;
 
 //--Globals ---------------------------------------------------------------
@@ -100,7 +100,7 @@ void display()
 {
 	float lpos[4] = {10., 10., 10., 1.0};			//light's position
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);    //GL_LINE = Wireframe;   GL_FILL = Solid
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);    //GL_LINE = Wireframe;   GL_FILL = Solid
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -111,7 +111,7 @@ void display()
 	glRotatef(angleX, 1.0, 0.0, 0.0);			//rotate the object about the x-axis
 	glRotatef(angleY, 0.0, 1.0, 0.0);			//rotate the object about the y-axis
 
-	glColor3f(0., 1., 1.);
+    glColor3f(0., 0.9, 0.);
 
 	for(int indx = 0; indx < nface; indx++)		//draw each face
 	{
@@ -133,10 +133,10 @@ void display()
 void initialize()
 {
 	float model_wid, model_hgt;
-    loadMeshFile("Octahedron.off");			//Specify mesh file name here
+    loadMeshFile("Oni.off");			//Specify mesh file name here
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);	//Background colour
 
-	glEnable(GL_LIGHTING);					//Enable OpenGL states
+    glEnable(GL_LIGHTING);					//Enable OpenGL states
 	glEnable(GL_LIGHT0);
  	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_DEPTH_TEST);
@@ -158,10 +158,10 @@ void initialize()
 // To enable the use of left and right arrow keys to rotate the scene
 void special(int key, int x, int y)
 {
-    if(key == GLUT_KEY_LEFT) angleY--;
-    else if(key == GLUT_KEY_RIGHT) angleY++;
-	else if (key == GLUT_KEY_UP) angleX--;
-	else if (key == GLUT_KEY_DOWN) angleX++;
+    if(key == GLUT_KEY_LEFT) angleY -= 2;
+    else if(key == GLUT_KEY_RIGHT) angleY += 2;
+    else if (key == GLUT_KEY_UP) angleX -= 2;
+    else if (key == GLUT_KEY_DOWN) angleX += 2;
     glutPostRedisplay();
 }
 

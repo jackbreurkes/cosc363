@@ -6,7 +6,12 @@
 //  ========================================================================
 
 #include <cmath>
-#include <GLUT/glut.h>
+#include <GL/freeglut.h>
+
+#define CAM_PAN_UNITS 12
+
+int cam_height = 10;
+float theta = 0;
 
 
 //--Draws a grid of lines on the floor plane -------------------------------
@@ -14,15 +19,37 @@ void drawFloor()
 {
 	glColor3f(0., 0.5,  0.);			//Floor colour
 
-	for(int i = -50; i <= 50; i ++)
+    for(int i = -50; i <= 50; i ++)
 	{
-		glBegin(GL_LINES);			//A set of grid lines on the xz-plane
-			glVertex3f(-50, -0.75, i);
-			glVertex3f(50, -0.75, i);
-			glVertex3f(i, -0.75, -50);
+        glBegin(GL_LINES);			//A set of grid lines on the xz-plane
+            glVertex3f(-50, -0.75, i);
+            glVertex3f(50, -0.75, i);
+            glVertex3f(i, -0.75, -50);
 			glVertex3f(i, -0.75, 50);
 		glEnd();
 	}
+}
+
+void myTimer(int value) {
+    theta += 0.05;
+    glutPostRedisplay();
+    glutTimerFunc(50, myTimer, 0); // 50 ms
+}
+
+//--Special keyboard event callback function ---------
+void special(int key, int x, int y) {
+    if (key == GLUT_KEY_UP) cam_height++;
+    else if (key == GLUT_KEY_DOWN) cam_height--;
+
+//    if (key == GLUT_KEY_LEFT) cam_pan_pos--;
+//    else if (key == GLUT_KEY_RIGHT) cam_pan_pos++;
+
+    if (cam_height > 20) cam_height = 20;
+    else if (cam_height < 2) cam_height = 2;
+
+//    cam_pan_pos = cam_pan_pos % 360;
+
+    glutPostRedisplay();
 }
 
 //--Display: ---------------------------------------------------------------
@@ -36,7 +63,7 @@ void display(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-    gluLookAt(0, 0, 12, 0, 0, 0, 0, 1, 0);  //Camera position and orientation
+    gluLookAt(12*sin(theta), cam_height, 12*cos(theta),  0, 0, 0,  0, 1, 0);  //Camera position and orientation
 
 	glLightfv(GL_LIGHT0,GL_POSITION, lpos);   //Set light position
 
@@ -45,7 +72,12 @@ void display(void)
 
 	glEnable(GL_LIGHTING);			//Enable lighting when drawing the teapot
     glColor3f(0.0, 1.0, 1.0);
-    glutSolidTeapot(1.0);
+
+    if (cam_height % 2 == 0) {
+        glutSolidTeapot(1.0);
+    } else {
+        glutSolidSphere(1, 40, 40);
+    }
 
 	glFlush(); 
 } 
@@ -77,6 +109,8 @@ int main(int argc, char **argv)
 	glutCreateWindow("Teapot");
 	initialize();
 	glutDisplayFunc(display);
+    glutSpecialFunc(special);
+    glutTimerFunc(50, myTimer, 0);
 	glutMainLoop();
 	return 0; 
 }
