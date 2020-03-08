@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <GL/freeglut.h>
+//#include <GLUT/glut.h>
 
 #define CAM_PAN_UNITS 12
 
