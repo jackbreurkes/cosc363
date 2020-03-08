@@ -6,9 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/assignment.cpp
-cmath
--
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/SkyboxTexture.cpp
+SkyboxTexture.h
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/SkyboxTexture.h
 GLUT/glut.h
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/GLUT/glut.h
+
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/SkyboxTexture.h
+string
+-
+OpenGL/OpenGL.h
 -
 

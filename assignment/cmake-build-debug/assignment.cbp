@@ -80,6 +80,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/SkyboxTexture.cpp">
+			<Option target="assignment.out"/>
+		</Unit>
+		<Unit filename="/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/SkyboxTexture.h">
+			<Option target="assignment.out"/>
+		</Unit>
 		<Unit filename="/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/assignment.cpp">
 			<Option target="assignment.out"/>
 		</Unit>

@@ -123,6 +123,33 @@ assignment.out/fast:
 	$(MAKE) -f CMakeFiles/assignment.out.dir/build.make CMakeFiles/assignment.out.dir/build
 .PHONY : assignment.out/fast
 
+SkyboxTexture.o: SkyboxTexture.cpp.o
+
+.PHONY : SkyboxTexture.o
+
+# target to build an object file
+SkyboxTexture.cpp.o:
+	$(MAKE) -f CMakeFiles/assignment.out.dir/build.make CMakeFiles/assignment.out.dir/SkyboxTexture.cpp.o
+.PHONY : SkyboxTexture.cpp.o
+
+SkyboxTexture.i: SkyboxTexture.cpp.i
+
+.PHONY : SkyboxTexture.i
+
+# target to preprocess a source file
+SkyboxTexture.cpp.i:
+	$(MAKE) -f CMakeFiles/assignment.out.dir/build.make CMakeFiles/assignment.out.dir/SkyboxTexture.cpp.i
+.PHONY : SkyboxTexture.cpp.i
+
+SkyboxTexture.s: SkyboxTexture.cpp.s
+
+.PHONY : SkyboxTexture.s
+
+# target to generate assembly for a file
+SkyboxTexture.cpp.s:
+	$(MAKE) -f CMakeFiles/assignment.out.dir/build.make CMakeFiles/assignment.out.dir/SkyboxTexture.cpp.s
+.PHONY : SkyboxTexture.cpp.s
+
 assignment.o: assignment.cpp.o
 
 .PHONY : assignment.o
@@ -159,6 +186,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... assignment.out"
+	@echo "... SkyboxTexture.o"
+	@echo "... SkyboxTexture.i"
+	@echo "... SkyboxTexture.s"
 	@echo "... assignment.o"
 	@echo "... assignment.i"
 	@echo "... assignment.s"

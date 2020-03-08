@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/assignment.out.dir/SkyboxTexture.cpp.o"
   "CMakeFiles/assignment.out.dir/assignment.cpp.o"
   "assignment.out"
   "assignment.out.pdb"

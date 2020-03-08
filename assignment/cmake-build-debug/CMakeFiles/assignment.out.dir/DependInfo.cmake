@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/SkyboxTexture.cpp" "/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/cmake-build-debug/CMakeFiles/assignment.out.dir/SkyboxTexture.cpp.o"
   "/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/assignment.cpp" "/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/cmake-build-debug/CMakeFiles/assignment.out.dir/assignment.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "Clang")
