@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="lab3"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v all"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v rebuild_cache"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Train.out">
+				<Option output="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default/Train.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v Train.out"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Train.out/fast">
+				<Option output="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default/Train.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v Train.out/fast"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v edit_cache"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Yard.out">
+				<Option output="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default/Yard.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v Yard.out"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Yard.out/fast">
+				<Option output="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default/Yard.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v Yard.out/fast"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="RailWagon.out">
+				<Option output="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default/RailWagon.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v RailWagon.out"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="RailWagon.out/fast">
+				<Option output="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default/RailWagon.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab3-Desktop-Default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v RailWagon.out/fast"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/cosc/student/jsv22/labs/cosc363/labs/lab3/RailWagon.cpp">
+			<Option target="RailWagon.out"/>
+		</Unit>
+		<Unit filename="/home/cosc/student/jsv22/labs/cosc363/labs/lab3/Train.cpp">
+			<Option target="Train.out"/>
+		</Unit>
+		<Unit filename="/home/cosc/student/jsv22/labs/cosc363/labs/lab3/Yard.cpp">
+			<Option target="Yard.out"/>
+		</Unit>
+		<Unit filename="/home/cosc/student/jsv22/labs/cosc363/labs/lab3/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
