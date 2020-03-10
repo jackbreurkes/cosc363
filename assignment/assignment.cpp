@@ -3,8 +3,12 @@
 //
 
 #include <cmath>
-//#include <GL/freeglut.h>
-#include <GLUT/glut.h>
+#include "loadBMP.h"
+#ifdef __APPLE__
+#include "GLUT/glut.h"
+#else
+#include "GL/freeglut.h"
+#endif
 
 #define CAM_HEIGHT 5
 
@@ -13,6 +17,121 @@ float cam_pos_z = 10;
 float cam_front_x = 0;
 float cam_front_z = -1;
 float cam_rot = 0;
+
+GLuint texId[6];
+
+
+void loadTexture() {
+    glGenTextures(6, texId); 	// Create 2 texture ids
+
+    glBindTexture(GL_TEXTURE_2D, texId[0]);  //Use this texture
+    loadBMP("Daylight Box_Back.bmp");
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    glBindTexture(GL_TEXTURE_2D, texId[1]);  //Use this texture
+    loadBMP("Daylight Box_Right.bmp");
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    glBindTexture(GL_TEXTURE_2D, texId[2]);  //Use this texture
+    loadBMP("Daylight Box_Front.bmp");
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    glBindTexture(GL_TEXTURE_2D, texId[3]);  //Use this texture
+    loadBMP("Daylight Box_Left.bmp");
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    glBindTexture(GL_TEXTURE_2D, texId[4]);  //Use this texture
+    loadBMP("Daylight Box_Top.bmp");
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    glBindTexture(GL_TEXTURE_2D, texId[5]);  //Use this texture
+    loadBMP("Daylight Box_Bottom.bmp");
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+
+    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
+}
+
+
+float skybox_dist = 400.;
+float skybox_half_width = 400.;
+float skybox_half_height = 200.;
+
+void walls()
+{
+    glColor3f(0.8, 0.7, 0.3);   //replace with a texture
+
+    glEnable(GL_TEXTURE_2D);
+
+    glPushMatrix();
+    glTranslatef(cam_pos_x, CAM_HEIGHT, cam_pos_z);
+
+    ////////////////////// FRONT WALL ///////////////////////
+    glBindTexture(GL_TEXTURE_2D, texId[0]);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1, 1);         glVertex3f(-skybox_half_width, skybox_half_height, skybox_dist);
+    glTexCoord2f(1, 0);         glVertex3f(-skybox_half_width, -skybox_half_height, skybox_dist);
+    glTexCoord2f(0, 0);         glVertex3f(skybox_half_width, -skybox_half_height, skybox_dist);
+    glTexCoord2f(0, 1);         glVertex3f(skybox_half_width, skybox_half_height, skybox_dist);
+    glEnd();
+
+    ////////////////////// RIGHT WALL ///////////////////////
+    glBindTexture(GL_TEXTURE_2D, texId[1]);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 1);         glVertex3f(skybox_half_width, skybox_half_height, -skybox_dist);
+    glTexCoord2f(0, 0);         glVertex3f(skybox_half_width, -skybox_half_height, -skybox_dist);
+    glTexCoord2f(1, 0);         glVertex3f(skybox_half_width, -skybox_half_height, skybox_dist);
+    glTexCoord2f(1, 1);         glVertex3f(skybox_half_width, skybox_half_height, skybox_dist);
+    glEnd();
+
+    ////////////////////// BACK WALL ///////////////////////
+    glBindTexture(GL_TEXTURE_2D, texId[2]);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 1);         glVertex3f(-skybox_half_width, skybox_half_height, -skybox_dist);
+    glTexCoord2f(0, 0);         glVertex3f(-skybox_half_width, -skybox_half_height, -skybox_dist);
+    glTexCoord2f(1, 0);         glVertex3f(skybox_half_width, -skybox_half_height, -skybox_dist);
+    glTexCoord2f(1, 1);         glVertex3f(skybox_half_width, skybox_half_height, -skybox_dist);
+    glEnd();
+
+    ////////////////////// LEFT WALL ///////////////////////
+    glBindTexture(GL_TEXTURE_2D, texId[3]);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1, 1);         glVertex3f(-skybox_half_width, skybox_half_height, -skybox_dist);
+    glTexCoord2f(1, 0);         glVertex3f(-skybox_half_width, -skybox_half_height, -skybox_dist);
+    glTexCoord2f(0, 0);         glVertex3f(-skybox_half_width, -skybox_half_height, skybox_dist);
+    glTexCoord2f(0, 1);         glVertex3f(-skybox_half_width, skybox_half_height, skybox_dist);
+    glEnd();
+
+    ////////////////////// CEILING ///////////////////////
+    glBindTexture(GL_TEXTURE_2D, texId[4]);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 1);         glVertex3f(-skybox_half_width, skybox_half_height, skybox_dist);
+    glTexCoord2f(1, 1);         glVertex3f(skybox_half_width, skybox_half_height, skybox_dist);
+    glTexCoord2f(1, 0);         glVertex3f(skybox_half_width, skybox_half_height, -skybox_dist);
+    glTexCoord2f(0, 0);         glVertex3f(-skybox_half_width, skybox_half_height, -skybox_dist);
+    glEnd();
+
+    ////////////////////// FLOOR ///////////////////////
+    glBindTexture(GL_TEXTURE_2D, texId[5]);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1, 0);         glVertex3f(-skybox_half_width, -skybox_half_height, skybox_dist);
+    glTexCoord2f(1, 1);         glVertex3f(skybox_half_width, -skybox_half_height, skybox_dist);
+    glTexCoord2f(0, 1);         glVertex3f(skybox_half_width, -skybox_half_height, -skybox_dist);
+    glTexCoord2f(0, 0);         glVertex3f(-skybox_half_width, -skybox_half_height, -skybox_dist);
+    glEnd();
+
+
+    glPopMatrix();
+
+    glDisable(GL_TEXTURE_2D);
+}
+
 
 //--Draws a grid of lines on the floor plane -------------------------------
 void drawFloor()
@@ -30,6 +149,7 @@ void drawFloor()
     }
 }
 
+
 //--Special keyboard event callback function ---------
 void special(int key, int x, int y) {
     if (key == GLUT_KEY_UP) {
@@ -39,11 +159,11 @@ void special(int key, int x, int y) {
         cam_pos_x -= cam_front_x;
         cam_pos_z -= cam_front_z;
     } else if (key == GLUT_KEY_LEFT) {
-        cam_rot -= 0.01f;
+        cam_rot -= 0.05f;
         cam_front_x = sin(cam_rot);
         cam_front_z = -cos(cam_rot);
     } else if (key == GLUT_KEY_RIGHT) {
-        cam_rot += 0.01f;
+        cam_rot += 0.05f;
         cam_front_x = sin(cam_rot);
         cam_front_z = -cos(cam_rot);
     }
@@ -79,8 +199,10 @@ void display(void)
     glTranslatef(2.0, 1.0, -3.0);
     glutSolidCube(1.0);
     glPopMatrix();
-    glRotatef(30.0, 0.0, 1.0, 0.0);
+//    glRotatef(30.0, 0.0, 1.0, 0.0);
     glutSolidTeapot(0.8);
+
+    walls();
 
     glFlush();
 }
@@ -96,6 +218,8 @@ void initialize(void)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_NORMALIZE);
 
+    loadTexture();
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glFrustum(-5.0, 5.0, -5.0, 5.0, 10.0, 1000.0);   //Camera Frustum
@@ -109,7 +233,7 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_SINGLE | GLUT_DEPTH);
     glutInitWindowSize(600, 600);
     glutInitWindowPosition(0, 0);
-    glutCreateWindow("Teapot");
+    glutCreateWindow("jsv22 Assignment 1");
     initialize();
     glutDisplayFunc(display);
     glutSpecialFunc(special);

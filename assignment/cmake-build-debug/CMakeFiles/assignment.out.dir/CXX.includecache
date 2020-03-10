@@ -6,15 +6,23 @@
 
 #IncludeRegexTransform: 
 
-/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/SkyboxTexture.cpp
-SkyboxTexture.h
-/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/SkyboxTexture.h
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/assignment.cpp
+cmath
+-
+loadBMP.h
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/loadBMP.h
 GLUT/glut.h
 /Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/GLUT/glut.h
+GL/freeglut.h
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/GL/freeglut.h
 
-/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/SkyboxTexture.h
-string
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/loadBMP.h
+iostream
 -
-OpenGL/OpenGL.h
+fstream
 -
+GLUT/glut.h
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/GLUT/glut.h
+GL/freeglut.h
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/assignment/GL/freeglut.h
 

@@ -5,4 +5,5 @@ CMakeFiles/assignment.out.dir/SkyboxTexture.cpp.o: ../SkyboxTexture.cpp
 CMakeFiles/assignment.out.dir/SkyboxTexture.cpp.o: ../SkyboxTexture.h
 
 CMakeFiles/assignment.out.dir/assignment.cpp.o: ../assignment.cpp
+CMakeFiles/assignment.out.dir/assignment.cpp.o: ../loadBMP.h
 

@@ -7,7 +7,11 @@
  
 #include <iostream>
 #include <cmath> 
-#include <GL/glut.h>
+#ifdef __APPLE__
+#include "GLUT/glut.h"
+#else
+#include "GL/freeglut.h"
+#endif
 #include "loadTGA.h"
 using namespace std;
 
@@ -20,12 +24,12 @@ void loadTexture()
 	glGenTextures(2, txId); 	// Create 2 texture ids
 
 	glBindTexture(GL_TEXTURE_2D, txId[0]);  //Use this texture
-    loadTGA("Wall.tga");
+    loadTGA("gradient.tga");
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	
 
 	glBindTexture(GL_TEXTURE_2D, txId[1]);  //Use this texture
-    loadTGA("Floor.tga");
+    loadTGA("gradient.tga");
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	
 	
@@ -148,7 +152,7 @@ void display()
 int main(int argc, char** argv)
 {
    glutInit(&argc, argv);
-   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB| GLUT_DEPTH);
+   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
    glutInitWindowSize (600, 600); 
    glutInitWindowPosition (10, 10);
    glutCreateWindow ("The Yard");

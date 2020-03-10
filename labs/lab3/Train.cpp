@@ -6,8 +6,11 @@
 //  ========================================================================
 
 #include <math.h>
-#include <GL/freeglut.h>
-
+#ifdef __APPLE__
+#include "GLUT/glut.h"
+#else
+#include "GL/freeglut.h"
+#endif
 GLUquadric *q;    //Required for creating cylindrical objects
 
 //-- Ground Plane --------------------------------------------------------
