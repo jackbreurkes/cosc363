@@ -173,6 +173,32 @@ void special(int key, int x, int y) {
     glutPostRedisplay();
 }
 
+
+float player_v_vert = 0;
+float player_y = 0;
+void keyboard(unsigned char key, int x, int y) {
+    if (key == ' ') {
+        if (player_y == 0) {
+            player_v_vert = 10;
+            player_y = 0.5;
+        }
+    }
+}
+
+void calculateJumpY(int delta_t_ms) {
+    double delta_t_s = (delta_t_ms / 1000.);
+    if (player_y <= 0) {
+        player_y = 0;
+        player_v_vert = 0;
+        return;
+    }
+
+    player_y += player_v_vert * delta_t_s;
+    player_v_vert = player_v_vert - 9.8f * delta_t_s;
+    glutPostRedisplay();
+}
+
+float oldTimeSinceStart = 0;
 //--Display: ---------------------------------------------------------------
 //--This is the main display module containing function calls for generating
 //--the scene.
@@ -184,7 +210,12 @@ void display(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(cam_pos_x, CAM_HEIGHT, cam_pos_z, cam_pos_x + cam_front_x, CAM_HEIGHT, cam_pos_z + cam_front_z, 0, 1, 0);  //Camera position and orientation
+    int timeSinceStart = glutGet(GLUT_ELAPSED_TIME);
+    int deltaTime = timeSinceStart - oldTimeSinceStart;
+    oldTimeSinceStart = timeSinceStart;
+    calculateJumpY(deltaTime);
+
+    gluLookAt(cam_pos_x, CAM_HEIGHT + player_y, cam_pos_z, cam_pos_x + cam_front_x, CAM_HEIGHT + player_y, cam_pos_z + cam_front_z, 0, 1, 0);  //Camera position and orientation
 
     glLightfv(GL_LIGHT0,GL_POSITION, lpos);   //Set light position
 
@@ -237,6 +268,7 @@ int main(int argc, char **argv)
     initialize();
     glutDisplayFunc(display);
     glutSpecialFunc(special);
+    glutKeyboardFunc(keyboard);
     glutMainLoop();
     return 0;
 }
