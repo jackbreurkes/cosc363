@@ -149,6 +149,26 @@ void drawFloor()
     }
 }
 
+#define TEAPOT_ANIM_STEP 0.05
+#define TEAPOT_ANIM_TOTAL_FRAMES 90
+float teapot_pitch = 0;
+float teapot_yaw = 0;
+void tipTeapot(int frame) {
+    frame = frame % TEAPOT_ANIM_TOTAL_FRAMES;
+    int blockNum = frame / (TEAPOT_ANIM_TOTAL_FRAMES / 5);
+    if (blockNum < 1) {
+        teapot_pitch += 1;
+    } else if (blockNum < 3) {
+        teapot_pitch -= 2;
+    } else if (blockNum < 4) {
+        teapot_pitch += 3;
+    } else {
+        teapot_yaw += 180.0 / (float)(TEAPOT_ANIM_TOTAL_FRAMES / 5);
+    }
+    glutPostRedisplay();
+    glutTimerFunc(TEAPOT_ANIM_STEP, tipTeapot, frame + 1);
+}
+
 
 //--Special keyboard event callback function ---------
 void special(int key, int x, int y) {
@@ -173,18 +193,8 @@ void special(int key, int x, int y) {
     glutPostRedisplay();
 }
 
-
 float player_v_vert = 0;
 float player_y = 0;
-void keyboard(unsigned char key, int x, int y) {
-    if (key == ' ') {
-        if (player_y == 0) {
-            player_v_vert = 10;
-            player_y = 0.5;
-        }
-    }
-}
-
 void calculateJumpY(int delta_t_ms) {
     double delta_t_s = (delta_t_ms / 1000.);
     if (player_y <= 0) {
@@ -193,9 +203,21 @@ void calculateJumpY(int delta_t_ms) {
         return;
     }
 
+    // stops player_y from getting too high if the last frame was a long time ago
+    delta_t_s = std::min(delta_t_s, 0.05);
     player_y += player_v_vert * delta_t_s;
     player_v_vert = player_v_vert - 9.8f * delta_t_s;
     glutPostRedisplay();
+}
+
+
+void keyboard(unsigned char key, int x, int y) {
+    if (key == ' ' && player_y <= 0) {
+        player_v_vert = 10;
+        player_y = 0.1;
+        calculateJumpY(0);
+        glutPostRedisplay();
+    }
 }
 
 float oldTimeSinceStart = 0;
@@ -230,8 +252,14 @@ void display(void)
     glTranslatef(2.0, 1.0, -3.0);
     glutSolidCube(1.0);
     glPopMatrix();
-//    glRotatef(30.0, 0.0, 1.0, 0.0);
+
+    glPushMatrix();
+    glTranslatef(0, 1.5, 0); // height of teapot
+    glRotatef(teapot_yaw, 0, 1, 0);
+    glRotatef(teapot_pitch, 0, 0, 1);
+    glTranslatef(0, 0.8, 0); // sets axis of rotation
     glutSolidTeapot(0.8);
+    glPopMatrix();
 
     walls();
 
@@ -269,6 +297,7 @@ int main(int argc, char **argv)
     glutDisplayFunc(display);
     glutSpecialFunc(special);
     glutKeyboardFunc(keyboard);
+    glutTimerFunc(TEAPOT_ANIM_STEP, tipTeapot, 0);
     glutMainLoop();
     return 0;
 }
