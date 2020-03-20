@@ -22,7 +22,7 @@ GLuint texId[6];
 
 
 void loadTexture() {
-    glGenTextures(6, texId); 	// Create 2 texture ids
+    glGenTextures(7, texId); 	// Create texture ids
 
     glBindTexture(GL_TEXTURE_2D, texId[0]);  //Use this texture
     loadBMP("Daylight Box_Back.bmp");
@@ -54,6 +54,11 @@ void loadTexture() {
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
+    glBindTexture(GL_TEXTURE_2D, texId[6]);  //Use this texture
+    loadBMP("brick.bmp");
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
 
     glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
 }
@@ -63,7 +68,7 @@ float skybox_dist = 400.;
 float skybox_half_width = 400.;
 float skybox_half_height = 200.;
 
-void walls()
+void drawSkybox()
 {
     glColor3f(0.8, 0.7, 0.3);   //replace with a texture
 
@@ -148,6 +153,63 @@ void drawFloor()
         glEnd();
     }
 }
+
+
+void drawMuseum()
+{
+    glColor3f(0.8, 0.7, 0.3);   //replace with a texture
+
+//    glEnable(GL_TEXTURE_2D);
+//    glBindTexture(GL_TEXTURE_2D, texId[0]);
+
+    float hex_half_side_len = 10.0;
+    float hex_wall_dist = hex_half_side_len * tan(1.0472);
+
+    glPushMatrix();
+
+    for (int i = 0; i < 6; i++) {
+        ////////////////////// SPIRE ///////////////////////
+        glBegin(GL_TRIANGLES);
+        glTexCoord2f(0, 0);         glVertex3f(-hex_half_side_len, 7, hex_wall_dist);
+        glTexCoord2f(2, 0);         glVertex3f(hex_half_side_len, 7, hex_wall_dist);
+        glTexCoord2f(1, 2);         glVertex3f(0, 14, 0);
+        glEnd();
+        glRotatef(60, 0, 1, 0);
+    }
+
+    glBindTexture(GL_TEXTURE_2D, texId[6]);
+    for (int i = 0; i < 5; i++) {
+        ////////////////////// WALLS ///////////////////////
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 4);         glVertex3f(-hex_half_side_len, 7, hex_wall_dist);
+        glTexCoord2f(0, 0);         glVertex3f(-hex_half_side_len, 0, hex_wall_dist);
+        glTexCoord2f(4, 0);         glVertex3f(hex_half_side_len, 0, hex_wall_dist);
+        glTexCoord2f(4, 4);         glVertex3f(hex_half_side_len, 7, hex_wall_dist);
+        glEnd();
+        glRotatef(60, 0, 1, 0);
+    }
+
+    ////////////////////// DOOR SIDE 1 ///////////////////////
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 2);         glVertex3f(-hex_half_side_len, 7, hex_wall_dist);
+    glTexCoord2f(0, 0);         glVertex3f(-hex_half_side_len, 0, hex_wall_dist);
+    glTexCoord2f(2, 0);         glVertex3f(-hex_half_side_len / 2.5, 0, hex_wall_dist);
+    glTexCoord2f(2, 2);         glVertex3f(-hex_half_side_len / 2.5, 7, hex_wall_dist);
+    glEnd();
+
+    ////////////////////// DOOR SIDE 2 ///////////////////////
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 2);         glVertex3f(hex_half_side_len, 7, hex_wall_dist);
+    glTexCoord2f(0, 0);         glVertex3f(hex_half_side_len, 0, hex_wall_dist);
+    glTexCoord2f(2, 0);         glVertex3f(hex_half_side_len / 2.5, 0, hex_wall_dist);
+    glTexCoord2f(2, 2);         glVertex3f(hex_half_side_len / 2.5, 7, hex_wall_dist);
+    glEnd();
+
+    glPopMatrix();
+
+    glDisable(GL_TEXTURE_2D);
+}
+
 
 #define TEAPOT_ANIM_STEP 0.05
 #define TEAPOT_ANIM_TOTAL_FRAMES 90
@@ -243,8 +305,9 @@ void display(void)
 
     glDisable(GL_LIGHTING);			//Disable lighting when drawing floor.
     drawFloor();
+    glEnable(GL_LIGHTING);
 
-    glEnable(GL_LIGHTING);			//Enable lighting when drawing the teapot
+    drawMuseum();
     glColor3f(0.0, 1.0, 1.0);
 
 
@@ -261,7 +324,7 @@ void display(void)
     glutSolidTeapot(0.8);
     glPopMatrix();
 
-    walls();
+    drawSkybox();
 
     glFlush();
 }
