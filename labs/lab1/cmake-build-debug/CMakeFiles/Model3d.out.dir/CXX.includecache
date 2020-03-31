@@ -16,5 +16,7 @@ climits
 math.h
 -
 GLUT/glut.h
--
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/labs/lab1/GLUT/glut.h
+GL/freeglut.h
+/Users/jackbreurkes/Documents/Coding/Cpp/COSC363/labs/lab1/GL/freeglut.h
 
