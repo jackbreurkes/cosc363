@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="lab4"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v all"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v edit_cache"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Boat.out">
+				<Option output="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default/Boat.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v Boat.out"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Boat.out/fast">
+				<Option output="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default/Boat.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v Boat.out/fast"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v rebuild_cache"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Vase.out">
+				<Option output="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default/Vase.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v Vase.out"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Vase.out/fast">
+				<Option output="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default/Vase.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/local/bin/ninja -v Vase.out/fast"/>
+					<CompileFile command="/usr/local/bin/ninja -v &quot;$file&quot;"/>
+					<Clean command="/usr/local/bin/ninja -v clean"/>
+					<DistClean command="/usr/local/bin/ninja -v clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/cosc/student/jsv22/labs/cosc363/labs/lab4/Boat.cpp">
+			<Option target="Boat.out"/>
+		</Unit>
+		<Unit filename="/home/cosc/student/jsv22/labs/cosc363/labs/lab4/Vase.cpp">
+			<Option target="Vase.out"/>
+		</Unit>
+		<Unit filename="/home/cosc/student/jsv22/labs/cosc363/labs/lab4/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
