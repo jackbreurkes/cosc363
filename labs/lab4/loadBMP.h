@@ -13,7 +13,11 @@
 
 #include <iostream>
 #include <fstream>
-#include <GL/freeglut.h>
+#ifdef __APPLE__
+#include "GLUT/glut.h"
+#else
+#include "GL/freeglut.h"
+#endif
 using namespace std;
 
 void loadBMP(const char* filename)

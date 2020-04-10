@@ -7,7 +7,11 @@
  
 #include <iostream>
 #include <cmath> 
-#include <GL/freeglut.h>
+#ifdef __APPLE__
+#include "GLUT/glut.h"
+#else
+#include "GL/freeglut.h"
+#endif
 #include "loadBMP.h"
 using namespace std;
 

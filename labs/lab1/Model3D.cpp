@@ -152,10 +152,10 @@ void initialize()
 	xmin -= 0.2*model_wid;						//Extend minmax window further by 20% of its size.
 	xmax += 0.2*model_wid;
 	ymin -= 0.2*model_hgt;
-	ymax += 0.2*model_hgt; 
+	ymax += 0.2*model_hgt;
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glFrustum(xmin, xmax, ymin, ymax, 10, 1000);  //The camera view volume  
+	glFrustum(xmin, xmax, ymin, ymax, 10, 1000);  //The camera view volume
 }
 
 //------------ Special key event callback ---------------------------------
