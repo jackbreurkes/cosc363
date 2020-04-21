@@ -25,37 +25,49 @@ GLuint texId[10];
 
 
 void loadTexture() {
-    glGenTextures(10, texId); 	// Create texture ids
+    glGenTextures(11, texId); 	// Create texture ids
 
     glBindTexture(GL_TEXTURE_2D, texId[0]);  //Use this texture
     loadBMP("Daylight Box_Back.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[1]);  //Use this texture
     loadBMP("Daylight Box_Right.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[2]);  //Use this texture
     loadBMP("Daylight Box_Front.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[3]);  //Use this texture
     loadBMP("Daylight Box_Left.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[4]);  //Use this texture
     loadBMP("Daylight Box_Top.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[5]);  //Use this texture
     loadBMP("Daylight Box_Bottom.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[6]);  //Use this texture
     loadTGA("tree.tga");
@@ -67,13 +79,18 @@ void loadTexture() {
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
-    glBindTexture(GL_TEXTURE_2D, texId[8]);  //Use this texture
+    glBindTexture(GL_TEXTURE_2D, texId[8]);
     loadBMP("water.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
-    glBindTexture(GL_TEXTURE_2D, texId[9]);  //Use this texture
-    loadTGA("tree.tga");
+    glBindTexture(GL_TEXTURE_2D, texId[9]);
+    loadTGA("fire.tga");
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    glBindTexture(GL_TEXTURE_2D, texId[10]);
+    loadBMP("roof.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
@@ -125,13 +142,13 @@ void getObjectPosition(float* obj_pos) {
  * sets up cylindrical billboarding by applying a rotation pointing the current object at the camera
  */
 void setupCylindricalBillboarding() {
+    // TODO if you have any feedback on my implementation of billboarding, or getObjectPosition, I'm keen to hear!
     float obj_pos[3];
     getObjectPosition(obj_pos);
     glPushMatrix();
     glRotatef(atan2(obj_pos[0] - cam_pos_x, obj_pos[2] - cam_pos_z) * RAD_TO_DEG,
             0, 1, 0);
 }
-
 
 void teardownBillboard() {
     glPopMatrix();
@@ -144,15 +161,19 @@ typedef struct {
 } Particle;
 
 #define NUM_FLAMES 50
+#define MAX_PARTICLE_HEIGHT 5.0
+
 Particle flames[NUM_FLAMES];
 void drawParticles() {
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texId[6]);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0);
+    glBindTexture(GL_TEXTURE_2D, texId[9]);
 
-    glPushMatrix();
-    // code for billboarding
+    // code for billboarding. the particle system is billboarded as a single object to avoid
+    // running the billboarding code NUM_FLAMES times
+    setupCylindricalBillboarding();
     for (int i = 0; i < NUM_FLAMES; i++) {
-        setupCylindricalBillboarding();
 
         glBegin(GL_QUADS);
         glTexCoord2f(1, 1);     glVertex3f(flames[i].x-0.5, flames[i].height-0.5, flames[i].z);
@@ -160,16 +181,17 @@ void drawParticles() {
         glTexCoord2f(0, 0);     glVertex3f(flames[i].x+0.5, flames[i].height+0.5, flames[i].z);
         glTexCoord2f(0, 1);     glVertex3f(flames[i].x+0.5, flames[i].height-0.5, flames[i].z);
         glEnd();
-    teardownBillboard();
+
     }
-    glPopMatrix();
+    teardownBillboard();
 
     glDisable(GL_TEXTURE_2D);
+    glDisable(GL_ALPHA_TEST);
 }
 
 void createParticles() {
     for (int i = 0; i < NUM_FLAMES; i++) {
-        flames[i].height = drand48() * 5.;
+        flames[i].height = drand48() * MAX_PARTICLE_HEIGHT;
         flames[i].x = -2. + drand48() * 4.;
         flames[i].z = -2. + drand48() * 4.;
         flames[i].speed = 0.05 + drand48() * 0.05;
@@ -180,8 +202,8 @@ void createParticles() {
 void updateParticles() {
     for (int i = 0; i < NUM_FLAMES; i++) {
         flames[i].height += flames[i].speed;
-        if (flames[i].height > 5.) {
-            flames[i].height -= 5.0;
+        if (flames[i].height > MAX_PARTICLE_HEIGHT) {
+            flames[i].height = 0;
         }
     }
 }
@@ -260,6 +282,30 @@ void drawSkybox()
     glDisable(GL_TEXTURE_2D);
 }
 
+void drawFloor()
+{
+    int square_size = 5;
+    glDisable(GL_LIGHTING);			//Disable lighting when drawing floor.
+    glBegin(GL_QUADS);
+    glNormal3f(0, 1, 0);
+
+    for (int i = -100; i < 100; i += square_size) {
+        for (int j = -100; j < 100; j += square_size) {
+            if ((j + i) % 2 == 0) {
+                glColor3f(0.95, 0.95,  0.95);			//Floor colour
+            } else {
+                glColor3f(0.1, 0.1,  0.1);
+            }
+            glVertex3f(i, 0, j);
+            glVertex3f(i+square_size, 0, j);
+            glVertex3f(i+square_size, 0, j+square_size);
+            glVertex3f(i, 0, j+square_size);
+        }
+    }
+    glEnd();
+    glEnable(GL_LIGHTING);
+}
+
 
 void drawTree() {
     glPushMatrix();
@@ -287,7 +333,6 @@ void drawTree() {
 }
 
 
-
 void drawTrees() {
     for (int i = 0; i < 4; i++) {
         glPushMatrix();
@@ -297,31 +342,6 @@ void drawTrees() {
         drawTree();
         glPopMatrix();
     }
-}
-
-
-void drawFloor()
-{
-    int square_size = 5;
-    glDisable(GL_LIGHTING);			//Disable lighting when drawing floor.
-    glBegin(GL_QUADS);
-    glNormal3f(0, 1, 0);
-
-    for (int i = -100; i < 100; i += square_size) {
-        for (int j = -100; j < 100; j += square_size) {
-            if ((j + i) % 2 == 0) {
-                glColor3f(0.95, 0.95,  0.95);			//Floor colour
-            } else {
-                glColor3f(0.1, 0.1,  0.1);
-            }
-            glVertex3f(i, 0, j);
-            glVertex3f(i+square_size, 0, j);
-            glVertex3f(i+square_size, 0, j+square_size);
-            glVertex3f(i, 0, j+square_size);
-        }
-    }
-    glEnd();
-    glEnable(GL_LIGHTING);
 }
 
 
@@ -372,7 +392,7 @@ void drawPlane()
 }
 
 
-void drawBowl() {
+void drawPool() {
     glColor3f(0.5, 0.5, 0.5);
 
     float prev_radius = 0;
@@ -418,12 +438,12 @@ void drawBowl() {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texId[8]);
     glBegin(GL_TRIANGLE_FAN);
-    glNormal3f(0, 1, 0);
+    glNormal3f(0., 1., 0.);
     glTexCoord2f(0.5, 0.5);
-    glVertex3f(0, wy, 0);
+    glVertex3f(0., wy, 0.);
     for (int rev = 0; rev <= 36; rev++) {
-        float x = sin(3.14159 * 2 * (float)rev / 36);
-        float z = cos(3.14159 * 2 * (float)rev / 36);
+        float x = sin(3.14159 * 2.0 * (float)rev / 36.0);
+        float z = cos(3.14159 * 2.0 * (float)rev / 36.0);
         glTexCoord2f(x * 0.5 + 0.5, z * 0.5 + 0.5);
         glVertex3f(
                 x * radius,
@@ -438,36 +458,48 @@ void drawBowl() {
 
 void drawMuseum()
 {
+    // TODO normals don't seem right
     glColor3f(0.8, 0.7, 0.3);   //replace with a texture
     float hex_half_side_len = 10.0;
     float hex_wall_dist = hex_half_side_len * tan(1.0472);
 
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texId[0]);
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
 
     glPushMatrix();
+    glColor3f(0.5, 0, 0.5);
 
     for (int i = 0; i < 6; i++) {
         ////////////////////// SPIRE ///////////////////////
         glBegin(GL_TRIANGLES);
-        normal(-hex_half_side_len, 7, hex_wall_dist,
-               hex_half_side_len, 7, hex_wall_dist,
-               0, 14, 0);
-        glTexCoord2f(0, 0);         glVertex3f(-hex_half_side_len, 7, hex_wall_dist);
-        glTexCoord2f(2, 0);         glVertex3f(hex_half_side_len, 7, hex_wall_dist);
-        glTexCoord2f(1, 2);         glVertex3f(0, 14, 0);
+
+            normal(-hex_half_side_len, 7, hex_wall_dist,
+                   hex_half_side_len, 7, hex_wall_dist,
+                   0, 14, 0);
+//            glTexCoord2f(0, 0);
+            glVertex3f(-hex_half_side_len, 7, hex_wall_dist);
+
+//            glTexCoord2f(2, 0);
+            glVertex3f(hex_half_side_len, 7, hex_wall_dist);
+
+//            glTexCoord2f(1, 2);
+            glVertex3f(0, 14, 0);
+
         glEnd();
         glRotatef(60, 0, 1, 0);
     }
 
-    glBindTexture(GL_TEXTURE_2D, texId[7]);
+//    glEnable(GL_TEXTURE_2D);
+//    glBindTexture(GL_TEXTURE_2D, texId[10]);
+
+//    glBindTexture(GL_TEXTURE_2D, texId[7]);
     for (int i = 0; i < 5; i++) {
         glRotatef(60, 0, 1, 0);
         ////////////////////// WALLS ///////////////////////
         glBegin(GL_QUADS);
-//        normal(-hex_half_side_len, 7, hex_wall_dist,
-//               -hex_half_side_len, 0, hex_wall_dist,
-//               hex_half_side_len, 0, hex_wall_dist);
+        normal(-hex_half_side_len, 7, hex_wall_dist,
+               -hex_half_side_len, 0, hex_wall_dist,
+               hex_half_side_len, 0, hex_wall_dist);
         glTexCoord2f(0, 0);         glVertex3f(hex_half_side_len, 7, hex_wall_dist);
         glTexCoord2f(0, 4);         glVertex3f(hex_half_side_len, 0, hex_wall_dist);
         glTexCoord2f(4, 4);         glVertex3f(-hex_half_side_len, 0, hex_wall_dist);
@@ -563,26 +595,22 @@ void tipTeapot(int frame) {
     } else {
         teapot_yaw += 180.0 / (float)(TEAPOT_ANIM_TOTAL_FRAMES / 5);
     }
-    glutPostRedisplay();
-    updateParticles();
-    glutTimerFunc(TEAPOT_ANIM_STEP, tipTeapot, frame + 1);
 }
 
 float plane_rot = 0;
 float plane_height = 4;
 bool crashing = false;
-void flyPlane(int value) {
+void flyPlane() {
+    if (plane_height < 0.2) {  // plane crashed
+        return;
+    }
+
+    plane_rot += 1.5;
     if (!crashing) {
         plane_height = 4 + sin(plane_rot * 0.01745329252 * 4.0) * 0.5;
     } else {
         plane_height -= 0.025;
     }
-    if (plane_height < 0.2) {  // plane crashed
-        plane_height = 0.2;
-        return; // stop callbacks
-    }
-    plane_rot += 1.5;
-    glutTimerFunc(0.05, flyPlane, 0);
 }
 
 
@@ -603,10 +631,6 @@ void special(int key, int x, int y) {
         cam_front_x = sin(cam_rot);
         cam_front_z = -cos(cam_rot);
     }
-//    if (cam_height > 20) cam_height = 20;
-//    else if (cam_height < 2) cam_height = 2;
-
-//    glutPostRedisplay();
 }
 
 float player_v_vert = 0;
@@ -620,10 +644,9 @@ void calculateJumpY(int delta_t_ms) {
     }
 
     // stops player_y from getting too high if the last frame was a long time ago
-    delta_t_s = std::min(delta_t_s, 0.05);
+    delta_t_s = std::min(delta_t_s, 0.1);
     player_y += player_v_vert * delta_t_s;
     player_v_vert = player_v_vert - 9.8f * delta_t_s;
-//    glutPostRedisplay();
 }
 
 
@@ -632,10 +655,22 @@ void keyboard(unsigned char key, int x, int y) {
         player_v_vert = 10;
         player_y = 0.1;
         calculateJumpY(0);
-//        glutPostRedisplay();
     } else if (key == 'x') {
         crashing = true;
     }
+}
+
+
+void updateAnimations(int value) {
+    // TODO weird jitter when turning camera?
+    tipTeapot(value);
+    flyPlane();
+    if (crashing) {
+        updateParticles();
+    }
+    glutPostRedisplay();
+    value = value % TEAPOT_ANIM_TOTAL_FRAMES;
+    glutTimerFunc(0.05, updateAnimations, value + 1);
 }
 
 
@@ -672,7 +707,7 @@ void display(void)
     glPushMatrix();
     glTranslatef(0, 0, 3);
     glScalef(0.5, 0.5, 0.5);
-    drawBowl();
+    drawPool();
     glPopMatrix();
 
     //// PAPER PLANE
@@ -682,7 +717,7 @@ void display(void)
     glScalef(0.7, 0.7, 0.7);
     drawPlane();
     if (crashing) {
-        glTranslatef(-2.5, 0., 0.);
+        glTranslatef(-2.5, 0.25, 0.);
         glScalef(0.5, 0.5, 0.5);
         drawParticles();
     }
@@ -763,7 +798,7 @@ int main(int argc, char **argv)
     glutSpecialFunc(special);
     glutKeyboardFunc(keyboard);
     glutTimerFunc(TEAPOT_ANIM_STEP, tipTeapot, 0);
-    glutTimerFunc(0.05, flyPlane, 0);
+    glutTimerFunc(0.05, updateAnimations, 0);
 
     glutMainLoop();
     return 0;
