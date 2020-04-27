@@ -1,5 +1,5 @@
 //
-// Created by Jack Breurkes on 8/03/20.
+// Created by Jack van Heugten Breurkes on 8/03/20.
 //
 
 #include <cmath>
@@ -25,75 +25,69 @@ GLuint texId[10];
 
 
 void loadTexture() {
-    glGenTextures(11, texId); 	// Create texture ids
+    glGenTextures(10, texId); 	// Create texture ids
 
     glBindTexture(GL_TEXTURE_2D, texId[0]);  //Use this texture
-    loadBMP("Daylight Box_Back.bmp");
+    loadBMP("textures/Daylight Box_Back.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[1]);  //Use this texture
-    loadBMP("Daylight Box_Right.bmp");
+    loadBMP("textures/Daylight Box_Right.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[2]);  //Use this texture
-    loadBMP("Daylight Box_Front.bmp");
+    loadBMP("textures/Daylight Box_Front.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[3]);  //Use this texture
-    loadBMP("Daylight Box_Left.bmp");
+    loadBMP("textures/Daylight Box_Left.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[4]);  //Use this texture
-    loadBMP("Daylight Box_Top.bmp");
+    loadBMP("textures/Daylight Box_Top.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[5]);  //Use this texture
-    loadBMP("Daylight Box_Bottom.bmp");
+    loadBMP("textures/Daylight Box_Bottom.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glBindTexture(GL_TEXTURE_2D, texId[6]);  //Use this texture
-    loadTGA("tree.tga");
+    loadTGA("textures/tree.tga");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
     glBindTexture(GL_TEXTURE_2D, texId[7]);  //Use this texture
-    loadBMP("brick.bmp");
+    loadBMP("textures/brick.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
     glBindTexture(GL_TEXTURE_2D, texId[8]);
-    loadBMP("water.bmp");
+    loadBMP("textures/water.bmp");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
     glBindTexture(GL_TEXTURE_2D, texId[9]);
-    loadTGA("fire.tga");
+    loadTGA("textures/fire.tga");
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-
-    glBindTexture(GL_TEXTURE_2D, texId[10]);
-    loadBMP("roof.bmp");
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	//Set texture parameters
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-
 
     glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
 }
@@ -371,20 +365,20 @@ void drawPlane()
         // bottom surfaces
         normal(-5, 0, -2, 0, 0, 0, -5, -0.5, -0.5);
         glVertex3f(-5, -0.5, -0.5);
-        normal(-5, 0, -2, -5, -0.5, -0.5, -5, -1, 0);
-        glVertex3f(-5, -1, 0);
-        normal(-5, -0.5, -0.5, -5, -1, 0, -5, -0.5, 0.5);
+        normal(-5, 0, -2, -5, -0.5, -0.5, -5, -1.5, 0);
+        glVertex3f(-5, -1.5, 0);
+        normal(-5, -0.5, -0.5, -5, -1.5, 0, -5, -0.5, 0.5);
         glVertex3f(-5, -0.5, 0.5);
-        normal(-5, -1, 0, -5, -0.5, 0.5, -5, 0, 2);
+        normal(-5, -1.5, 0, -5, -0.5, 0.5, -5, 0, 2);
         glVertex3f(-5, 0, 2);
     glEnd();
 
     glBegin(GL_TRIANGLE_FAN); // back surface
-        normal(-5, 0, 2, -5, 0, -2, -5, -1, 0);
+        normal(-5, 0, 2, -5, 0, -2, -5, -1.5, 0);
         glVertex3f(-5, 0, 0); // fan point
         glVertex3f(-5, 0, 2);
         glVertex3f(-5, -0.5, 0.5);
-        glVertex3f(-5, -1, 0);
+        glVertex3f(-5, -1.5, 0);
         glVertex3f(-5, -0.5, -0.5);
         glVertex3f(-5, 0, -2);
         glVertex3f(-5, 0, 2);
@@ -405,7 +399,7 @@ void drawPool() {
     for (int level = 0; level < 30; level++) {
 
         vy = level * 0.1;
-        radius = sqrt(vy) * 2;
+        radius = sqrt(vy) * 2; // x = sqrt(y) * 2 --> y = (x/2)**2 = (x**2)/4
         wy = level * 0.1 + 0.1;
 
         glBegin(GL_TRIANGLE_STRIP);
@@ -458,41 +452,39 @@ void drawPool() {
 
 void drawMuseum()
 {
-    // TODO normals don't seem right
-    glColor3f(0.8, 0.7, 0.3);   //replace with a texture
     float hex_half_side_len = 10.0;
     float hex_wall_dist = hex_half_side_len * tan(1.0472);
 
-    glDisable(GL_TEXTURE_2D);
-    glEnable(GL_LIGHTING);
 
     glPushMatrix();
-    glColor3f(0.5, 0, 0.5);
+    glColor3f(0.3, 0.3, 0.3);
 
     for (int i = 0; i < 6; i++) {
         ////////////////////// SPIRE ///////////////////////
         glBegin(GL_TRIANGLES);
 
-            normal(-hex_half_side_len, 7, hex_wall_dist,
-                   hex_half_side_len, 7, hex_wall_dist,
-                   0, 14, 0);
-//            glTexCoord2f(0, 0);
+            float nx = 0;
+            float ny = 2.0 * hex_wall_dist * hex_half_side_len;
+            float nz = 14.0 * hex_half_side_len;
+
+            glNormal3f(nx-20, ny, nz);
             glVertex3f(-hex_half_side_len, 7, hex_wall_dist);
 
-//            glTexCoord2f(2, 0);
+        glNormal3f(nx+20, ny, nz);
             glVertex3f(hex_half_side_len, 7, hex_wall_dist);
 
-//            glTexCoord2f(1, 2);
+        glNormal3f(nx, ny, nz);
             glVertex3f(0, 14, 0);
 
         glEnd();
         glRotatef(60, 0, 1, 0);
     }
 
-//    glEnable(GL_TEXTURE_2D);
-//    glBindTexture(GL_TEXTURE_2D, texId[10]);
 
-//    glBindTexture(GL_TEXTURE_2D, texId[7]);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texId[7]);
+    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
+    glColor3f(1, 1, 1);
     for (int i = 0; i < 5; i++) {
         glRotatef(60, 0, 1, 0);
         ////////////////////// WALLS ///////////////////////
@@ -502,8 +494,8 @@ void drawMuseum()
                hex_half_side_len, 0, hex_wall_dist);
         glTexCoord2f(0, 0);         glVertex3f(hex_half_side_len, 7, hex_wall_dist);
         glTexCoord2f(0, 4);         glVertex3f(hex_half_side_len, 0, hex_wall_dist);
-        glTexCoord2f(4, 4);         glVertex3f(-hex_half_side_len, 0, hex_wall_dist);
-        glTexCoord2f(4, 0);         glVertex3f(-hex_half_side_len, 7, hex_wall_dist);
+        glTexCoord2f(2, 4);         glVertex3f(-hex_half_side_len, 0, hex_wall_dist);
+        glTexCoord2f(2, 0);         glVertex3f(-hex_half_side_len, 7, hex_wall_dist);
         glEnd();
     }
 
@@ -526,6 +518,7 @@ void drawMuseum()
 
     glPopMatrix();
 
+    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
     glDisable(GL_TEXTURE_2D);
 }
 
@@ -579,7 +572,7 @@ void drawGlass() {
 }
 
 
-#define TEAPOT_ANIM_STEP 0.05
+#define ANIM_STEP_MILLIS 20
 #define TEAPOT_ANIM_TOTAL_FRAMES 90
 float teapot_pitch = 0;
 float teapot_yaw = 0;
@@ -595,12 +588,13 @@ void tipTeapot(int frame) {
     } else {
         teapot_yaw += 180.0 / (float)(TEAPOT_ANIM_TOTAL_FRAMES / 5);
     }
+    glutTimerFunc(ANIM_STEP_MILLIS, tipTeapot, frame + 1);
 }
 
 float plane_rot = 0;
 float plane_height = 4;
 bool crashing = false;
-void flyPlane() {
+void flyPlane(int value) {
     if (plane_height < 0.2) {  // plane crashed
         return;
     }
@@ -611,6 +605,7 @@ void flyPlane() {
     } else {
         plane_height -= 0.025;
     }
+    glutTimerFunc(ANIM_STEP_MILLIS, flyPlane, 0);
 }
 
 
@@ -661,16 +656,9 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 
-void updateAnimations(int value) {
-    // TODO weird jitter when turning camera?
-    tipTeapot(value);
-    flyPlane();
-    if (crashing) {
-        updateParticles();
-    }
+void updateDisplay(int value) {
     glutPostRedisplay();
-    value = value % TEAPOT_ANIM_TOTAL_FRAMES;
-    glutTimerFunc(0.05, updateAnimations, value + 1);
+    glutTimerFunc(ANIM_STEP_MILLIS, updateDisplay, 0);
 }
 
 
@@ -682,7 +670,7 @@ void display(void)
 {
     float hex_half_side_len = 10.0;
     float hex_wall_dist = hex_half_side_len * tan(1.0472);
-    float lpos[4] = {10., 5., 0., 1.0};  //light's position
+    float lpos[4] = {30., 20., 5., 1.0};  //light's position
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -719,6 +707,7 @@ void display(void)
     if (crashing) {
         glTranslatef(-2.5, 0.25, 0.);
         glScalef(0.5, 0.5, 0.5);
+        updateParticles();
         drawParticles();
     }
     glPopMatrix();
@@ -797,8 +786,10 @@ int main(int argc, char **argv)
     glutDisplayFunc(display);
     glutSpecialFunc(special);
     glutKeyboardFunc(keyboard);
-    glutTimerFunc(TEAPOT_ANIM_STEP, tipTeapot, 0);
-    glutTimerFunc(0.05, updateAnimations, 0);
+
+    glutTimerFunc(ANIM_STEP_MILLIS, tipTeapot, 0);
+    glutTimerFunc(ANIM_STEP_MILLIS, flyPlane, 0);
+    glutTimerFunc(ANIM_STEP_MILLIS, updateDisplay, 0);
 
     glutMainLoop();
     return 0;

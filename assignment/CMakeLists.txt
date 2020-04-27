@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(assignment)
 
-add_executable(assignment.out assignment.cpp SkyboxTexture.cpp SkyboxTexture.h)
+add_executable(assignment.out assignment.cpp)
 
 #set(CMAKE_OSX_DEPLOYMENT_TARGET "10.8")
 find_package(OpenGL REQUIRED)
