@@ -17,14 +17,13 @@ float Sphere::intersect(glm::vec3 p0, glm::vec3 dir)
     glm::vec3 vdif = p0 - center;   //Vector s (see Slide 28)
     float b = glm::dot(dir, vdif);
     float len = glm::length(vdif);
-    float c = len*len - radius*radius;
-    float delta = b*b - c;
+    float delta = b*b - len*len - radius*radius;
    
-	if(fabs(delta) < 0.001) return -1.0; 
-    if(delta < 0.0) return -1.0;
+	if(fabs(delta) < 0.001) return -1.0;  // if intersect is very close to p0 (i.e. is ray source)
+    if(delta < 0.0) return -1.0;  // if ray does not intersect the sphere
 
-    float t1 = -b - sqrt(delta);
-    float t2 = -b + sqrt(delta);
+    float t1 = -b - sqrt(delta);  // dist to first intersection
+    float t2 = -b + sqrt(delta);  // dist to second intersection
     if(fabs(t1) < 0.001 )
     {
         if (t2 > 0) return t2;

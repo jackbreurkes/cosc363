@@ -13,13 +13,14 @@
 #include "Sphere.h"
 #include "SceneObject.h"
 #include "Ray.h"
-#include <GL/freeglut.h>
+//#include <GL/freeglut.h>
+#include <GLUT/glut.h>
 using namespace std;
 
 const float WIDTH = 20.0;  
 const float HEIGHT = 20.0;
 const float EDIST = 40.0;
-const int NUMDIV = 50;
+const int NUMDIV = 500;
 const int MAX_STEPS = 5;
 const float XMIN = -WIDTH * 0.5;
 const float XMAX =  WIDTH * 0.5;
@@ -45,7 +46,14 @@ glm::vec3 trace(Ray ray, int step)
 	obj = sceneObjects[ray.index];					//object on which the closest point of intersection is found
 
 
-	color = obj->getColor();						//Object's colour
+	color = obj->lighting(lightPos, -ray.dir, ray.hit);						//Object's colour
+	glm::vec3 lightVec = lightPos - ray.hit;
+	Ray shadowRay(ray.hit, lightVec);
+
+	shadowRay.closestPt(sceneObjects);
+	if (shadowRay.index != -1 && shadowRay.dist < glm::length(lightVec)) {
+	    color = glm::vec3(0.2) * obj->getColor();
+	}
 
 
 	return color;
@@ -107,9 +115,23 @@ void initialize()
 
     glClearColor(0, 0, 0, 1);
 
-//	Sphere *sphere1 = new Sphere(glm::vec3(-5.0, 0.0, -90.0), 15.0);
-//	sphere1->setColor(glm::vec3(0, 0, 1));   //Set colour to blue
-//	sceneObjects.push_back(sphere1);		 //Add sphere to scene objects
+	Sphere *sphere1 = new Sphere(glm::vec3(-5.0, 0.0, -90.0), 15.0);
+	sphere1->setColor(glm::vec3(0, 0, 1));   //Set colour to blue
+	sceneObjects.push_back(sphere1);		 //Add sphere to scene objects
+
+    Sphere *sphere2 = new Sphere(glm::vec3(5.0, 5.0, -70), 4.0);
+    sphere2->setColor(glm::vec3(0.5, 1, 0.5));
+    sphere2->setShininess(20.0);
+    sceneObjects.push_back(sphere2);
+
+    Sphere *sphere3 = new Sphere(glm::vec3(5.0, -10.0, -60), 5.0);
+    sphere3->setColor(glm::vec3(1,1,1));
+    sphere3->setSpecularity(false);
+    sceneObjects.push_back(sphere3);
+
+    Sphere *sphere4 = new Sphere(glm::vec3(10.0, 10.0, -60.0), 3.0);
+    sphere4->setColor(glm::vec3(1, 0, 0));
+    sceneObjects.push_back(sphere4);
 
 }
 
