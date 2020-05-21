@@ -11,12 +11,16 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "Sphere.h"
+#include "Cylinder.h"
 #include "SceneObject.h"
 #include "Ray.h"
 #include "Plane.h"
 #include "TextureBMP.h"
-//#include <GL/freeglut.h>
-#include <GLUT/glut.h>
+#ifdef __APPLE__
+#include "GLUT/glut.h"
+#else
+#include "GL/freeglut.h"
+#endif
 using namespace std;
 
 const float WIDTH = 20.0;  
@@ -137,10 +141,54 @@ void display()
 
 
 
+void createCube(glm::vec3 center, float size=1, glm::vec3 color = glm::vec3(0.8, 0.2, 0.2), bool specularity = false) {
+    float halfSize = size / 2.0f;
+
+    glm::vec3 bottomLeftFront(center.x - halfSize, center.y - halfSize, center.z + halfSize);
+    glm::vec3 bottomLeftBack(center.x - halfSize, center.y - halfSize, center.z - halfSize);
+    glm::vec3 bottomRightFront(center.x + halfSize, center.y - halfSize, center.z + halfSize);
+    glm::vec3 bottomRightBack(center.x + halfSize, center.y - halfSize, center.z - halfSize);
+    glm::vec3 topLeftFront(center.x - halfSize, center.y + halfSize, center.z + halfSize);
+    glm::vec3 topLeftBack(center.x - halfSize, center.y + halfSize, center.z - halfSize);
+    glm::vec3 topRightFront(center.x + halfSize, center.y + halfSize, center.z + halfSize);
+    glm::vec3 topRightBack(center.x + halfSize, center.y + halfSize, center.z - halfSize);
+
+    Plane *top = new Plane (topLeftFront, topRightFront, topRightBack, topLeftBack);
+    Plane *bottom = new Plane (bottomLeftBack, bottomRightBack, bottomRightFront, bottomLeftFront);
+    Plane *left = new Plane (bottomLeftBack, bottomLeftFront, topLeftFront, topLeftBack);
+    Plane *right = new Plane (topRightBack, topRightFront, bottomRightFront, bottomRightBack);
+    Plane *back = new Plane (topLeftBack, topRightBack, bottomRightBack, bottomLeftBack);
+    Plane *front = new Plane (bottomLeftFront, bottomRightFront, topRightFront, topLeftFront);
+
+
+    top->setColor(color);
+    bottom->setColor(color);
+    left->setColor(color);
+    right->setColor(color);
+    back->setColor(color);
+    front->setColor(color);
+
+    top->setSpecularity(specularity);
+    bottom->setSpecularity(specularity);
+    left->setSpecularity(specularity);
+    right->setSpecularity(specularity);
+    back->setSpecularity(specularity);
+    front->setSpecularity(specularity);
+
+    sceneObjects.push_back(top);
+    sceneObjects.push_back(bottom);
+    sceneObjects.push_back(left);
+    sceneObjects.push_back(right);
+    sceneObjects.push_back(back);
+    sceneObjects.push_back(front);
+}
+
+
+
 //---This function initializes the scene ------------------------------------------- 
 //   Specifically, it creates scene objects (spheres, planes, cones, cylinders etc)
 //     and add them to the list of scene objects.
-//   It also initializes the OpenGL orthographc projection matrix for drawing the
+//   It also initializes the OpenGL orthographic projection matrix for drawing the
 //     the ray traced image.
 //----------------------------------------------------------------------------------
 void initialize()
@@ -151,6 +199,19 @@ void initialize()
     texture = TextureBMP("Butterfly.bmp");
 
     glClearColor(0, 0, 0, 1);
+
+    Plane *plane = new Plane (glm::vec3(-20., -15, -40), glm::vec3(20., -15, -40),
+                              glm::vec3(20., -15, -200), glm::vec3(-20., -15, -200));
+    plane->setColor(glm::vec3(0.8, 0.8, 0));
+    plane->setSpecularity(false);
+    sceneObjects.push_back(plane); // index 0
+
+    createCube(glm::vec3(-10., -10., -60.), 4.);
+
+    Cylinder *cylinder1 = new Cylinder(glm::vec3(-5.0, -15.0, -60.0), 5.0, 7.0);
+    cylinder1->setColor(glm::vec3(0, 0, 1));   // Set colour to blue
+    cylinder1->setReflectivity(true, 0.8);
+//    sceneObjects.push_back(cylinder1);
 
 	Sphere *sphere1 = new Sphere(glm::vec3(-5.0, 0.0, -90.0), 15.0);
 	sphere1->setColor(glm::vec3(0, 0, 1));   // Set colour to blue
@@ -171,12 +232,6 @@ void initialize()
     Sphere *sphere4 = new Sphere(glm::vec3(10.0, 10.0, -60.0), 3.0);
     sphere4->setColor(glm::vec3(1, 0, 0));
 //    sceneObjects.push_back(sphere4);
-
-    Plane *plane = new Plane (glm::vec3(-20., -15, -40), glm::vec3(20., -15, -40),
-                              glm::vec3(20., -15, -200), glm::vec3(-20., -15, -200));
-    plane->setColor(glm::vec3(0.8, 0.8, 0));
-    plane->setSpecularity(false);
-    sceneObjects.push_back(plane);
 
 }
 

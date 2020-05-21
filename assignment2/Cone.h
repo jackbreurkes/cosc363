@@ -2,16 +2,16 @@
 // Created by Jack Breurkes on 5/05/20.
 //
 
-#ifndef H_CYLINDER
-#define H_CYLINDER
+#ifndef H_CONE
+#define H_CONE
 #include <glm/glm.hpp>
 #include "SceneObject.h"
 
 
 /**
- * defines a cylinder located at center
+ * defines a cone located at center
  */
-class Cylinder : public SceneObject {
+class Cone : public SceneObject {
 
 private:
     glm::vec3 center = glm::vec3(0);
@@ -19,9 +19,9 @@ private:
     float height = 1;
 
 public:
-    Cylinder() {};  //Default constructor creates a unit cylinder at the origin
+    Cone() {};  //Default constructor creates a unit cone at the origin
 
-    Cylinder(glm::vec3 c, float r, float h) : center(c), radius(r), height(h) {}
+    Cone(glm::vec3 c, float r, float h) : center(c), radius(r), height(h) {}
 
     float intersect(glm::vec3 p0, glm::vec3 dir);
 
@@ -29,4 +29,4 @@ public:
 
 };
 
-#endif //!H_CYLINDER
+#endif //!H_CONE
