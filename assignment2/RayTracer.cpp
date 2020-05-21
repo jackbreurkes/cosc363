@@ -36,6 +36,11 @@ TextureBMP texture;
 
 vector<SceneObject*> sceneObjects;
 
+const int CHECKERED_PLANE_INDEX = 0;
+
+
+// TODO spotlight
+
 
 //---The most important function in a ray tracer! ---------------------------------- 
 //   Computes the colour value obtained by tracing a ray and finding its 
@@ -52,10 +57,11 @@ glm::vec3 trace(Ray ray, int step)
     if(ray.index == -1) return backgroundCol;		//no intersection
 	obj = sceneObjects[ray.index];					//object on which the closest point of intersection is found
 
-    if (ray.index == 0) {
+    if (ray.index == CHECKERED_PLANE_INDEX) { // draw checkered plane
         int stripeWidth = 5;
         int iz = (ray.hit.z) / stripeWidth;
-        int k = iz % 2; // 2 colours
+        int ix = (ray.hit.x + 1000) / stripeWidth; // add 1000 so that ix is positive in this render
+        int k = (iz + ix) % 2; // 2 colours
         switch (k) {
             case 0:
                 color = glm::vec3(0, 1, 0);
@@ -65,15 +71,6 @@ glm::vec3 trace(Ray ray, int step)
                 break;
         }
         obj->setColor(color);
-
-//        float texcoord_s = (ray.hit.x - (-20.)) / (20. - (-20.));
-//        float texcoord_t = (ray.hit.z - (-200.)) / (-40. - (-200.));
-        float texcoord_s = (ray.hit.x - (-15.)) / (5. - (-15.));
-        float texcoord_t = 1. - (ray.hit.z - (-90.)) / (-60. - (-90.));
-        if (texcoord_s > 0 && texcoord_s < 1 && texcoord_t > 0 && texcoord_t < 1) {
-            color = texture.getColorAt(texcoord_s, texcoord_t);
-            obj->setColor(color);
-        }
     }
 
 	color = obj->lighting(lightPos, -ray.dir, ray.hit);	 // Object's colour
@@ -82,7 +79,11 @@ glm::vec3 trace(Ray ray, int step)
 
 	shadowRay.closestPt(sceneObjects);
 	if (shadowRay.index != -1 && shadowRay.dist < glm::length(lightVec)) {
-	    color = glm::vec3(0.2) * obj->getColor();
+	    float shadowScalar = 0.2f;
+	    if (sceneObjects[shadowRay.index]->isTransparent()) { // TODO if object is placed at the back, then shadow is brighter??
+	        shadowScalar = 0.7f;
+	    }
+	    color = glm::vec3(shadowScalar) * obj->getColor();
 	}
 
 	if (obj->isReflective() && step < MAX_STEPS) {
@@ -90,13 +91,67 @@ glm::vec3 trace(Ray ray, int step)
 	    glm::vec3 normalVec = obj->normal(ray.hit);
 	    glm::vec3 reflectedDir = glm::reflect(ray.dir, normalVec);
 	    Ray reflectedRay(ray.hit, reflectedDir);
-	    glm::vec3 reflectedColor = trace(reflectedRay, step + 1);
+	    glm::vec3 reflectedColor = trace(reflectedRay, step + 1); // reflection recursive call
 	    color = color + (rho * reflectedColor);
 	}
 
+	if (obj->isTransparent() && step < MAX_STEPS) { // TODO tutor help - weird spots at bottom of sphere; colouring the sphere; specular transparent objects?
+	    Ray transparencyRay(ray.hit, ray.dir);
+	    if (glm::dot(obj->normal(ray.hit), ray.dir) < 0) { // ray is going into the object
+	        color *= trace(transparencyRay, step + 1);
+	    } else { // ray out of the object
+	        color = trace(transparencyRay, step + 1);
+	    }
+	}
+
+	if (obj->isRefractive() && step < MAX_STEPS) {
+	    float eta = 1.0f / obj->getRefractiveIndex(); // refractive index of air is 1.0
+	    glm::vec3 normal = obj->normal(ray.hit);
+	    if (glm::dot(normal, ray.dir) < 0) { // ray is going into object
+	        glm::vec3 g = glm::refract(ray.dir, normal, eta);
+	        Ray refractionRay(ray.hit, g);
+	        color = trace(refractionRay, step + 1); // TODO doesn't care about old colour?
+	    } else { // ray is coming out of object
+	        glm::vec3 h = glm::refract(ray.dir, -normal, 1.0f/eta);
+	        Ray refractionRay(ray.hit, h);
+	        color = trace(refractionRay, step + 1);
+	    }
+	}
 
 	return color;
 }
+
+
+glm::vec3 getColorNoAntiAliasing(float xp, float yp, float cellX, float cellY, glm::vec3 eye) {
+    glm::vec3 dir(xp+0.5*cellX, yp+0.5*cellY, -EDIST);	//direction of the primary ray
+    Ray ray = Ray(eye, dir);
+    glm::vec3 col = trace (ray, 1); //Trace the primary ray and get the colour value
+    return col;
+}
+
+glm::vec3 getColorWithAntiAliasing(float xp, float yp, float cellX, float cellY, glm::vec3 eye) {
+        glm::vec3 dir1(xp+0.25*cellX, yp+0.25*cellY, -EDIST);
+        glm::vec3 dir2(xp+0.25*cellX, yp+0.75*cellY, -EDIST);
+        glm::vec3 dir3(xp+0.75*cellX, yp+0.25*cellY, -EDIST);
+        glm::vec3 dir4(xp+0.75*cellX, yp+0.75*cellY, -EDIST);
+
+        Ray ray1 = Ray(eye, dir1);
+        Ray ray2 = Ray(eye, dir2);
+        Ray ray3 = Ray(eye, dir3);
+        Ray ray4 = Ray(eye, dir4);
+
+        glm::vec3 col1 = trace (ray1, 1);
+        glm::vec3 col2 = trace (ray2, 1);
+        glm::vec3 col3 = trace (ray3, 1);
+        glm::vec3 col4 = trace (ray4, 1);
+
+        float avgRed = (col1.r + col2.r + col3.r + col4.r) / 4.0f;
+        float avgGreen = (col1.g + col2.g + col3.g + col4.g) / 4.0f;
+        float avgBlue = (col1.b + col2.b + col3.b + col4.b) / 4.0f;
+
+        return glm::vec3(avgRed, avgGreen, avgBlue);
+}
+
 
 //---The main display module -----------------------------------------------------------
 // In a ray tracing application, it just displays the ray traced image by drawing
@@ -122,12 +177,11 @@ void display()
 		{
 			yp = YMIN + j*cellY;
 
-		    glm::vec3 dir(xp+0.5*cellX, yp+0.5*cellY, -EDIST);	//direction of the primary ray
+            glm::vec3 col = getColorNoAntiAliasing(xp, yp, cellX, cellY, eye); // TODO turn on anti-aliasing
+//            glm::vec3 col = getColorWithAntiAliasing(xp, yp, cellX, cellY, eye);
 
-		    Ray ray = Ray(eye, dir);
+            glColor3f(col.r, col.g, col.b);
 
-		    glm::vec3 col = trace (ray, 1); //Trace the primary ray and get the colour value
-			glColor3f(col.r, col.g, col.b);
 			glVertex2f(xp, yp);				//Draw each cell with its color value
 			glVertex2f(xp+cellX, yp);
 			glVertex2f(xp+cellX, yp+cellY);
@@ -141,7 +195,7 @@ void display()
 
 
 
-void createCube(glm::vec3 center, float size=1, glm::vec3 color = glm::vec3(0.8, 0.2, 0.2), bool specularity = false) {
+void createCube(glm::vec3 center, float size=1, glm::vec3 color = glm::vec3(0.8, 0.2, 0.2)) {
     float halfSize = size / 2.0f;
 
     glm::vec3 bottomLeftFront(center.x - halfSize, center.y - halfSize, center.z + halfSize);
@@ -168,12 +222,19 @@ void createCube(glm::vec3 center, float size=1, glm::vec3 color = glm::vec3(0.8,
     back->setColor(color);
     front->setColor(color);
 
-    top->setSpecularity(specularity);
-    bottom->setSpecularity(specularity);
-    left->setSpecularity(specularity);
-    right->setSpecularity(specularity);
-    back->setSpecularity(specularity);
-    front->setSpecularity(specularity);
+//    top->setReflectivity(reflectivity);
+//    bottom->setReflectivity(reflectivity);
+//    left->setReflectivity(reflectivity);
+//    right->setReflectivity(reflectivity);
+//    back->setReflectivity(reflectivity);
+//    front->setReflectivity(reflectivity);
+//
+//    top->setSpecularity(specularity);
+//    bottom->setSpecularity(specularity);
+//    left->setSpecularity(specularity);
+//    right->setSpecularity(specularity);
+//    back->setSpecularity(specularity);
+//    front->setSpecularity(specularity);
 
     sceneObjects.push_back(top);
     sceneObjects.push_back(bottom);
@@ -208,21 +269,23 @@ void initialize()
 
     createCube(glm::vec3(-10., -10., -60.), 4.);
 
-    Cylinder *cylinder1 = new Cylinder(glm::vec3(-5.0, -15.0, -60.0), 5.0, 7.0);
+    Cylinder *cylinder1 = new Cylinder(glm::vec3(10.0, -15.0, -60.0), 2.5, 5.0); // TODO 1 mark
     cylinder1->setColor(glm::vec3(0, 0, 1));   // Set colour to blue
     cylinder1->setReflectivity(true, 0.8);
-//    sceneObjects.push_back(cylinder1);
+    sceneObjects.push_back(cylinder1);
 
-	Sphere *sphere1 = new Sphere(glm::vec3(-5.0, 0.0, -90.0), 15.0);
-	sphere1->setColor(glm::vec3(0, 0, 1));   // Set colour to blue
-	sphere1->setReflectivity(true, 0.8);
-//	sceneObjects.push_back(sphere1);
+	Sphere *sphere1 = new Sphere(glm::vec3(0.0, 0.0, -120.0), 15.0);
+	sphere1->setColor(glm::vec3(1, 1, 0));
+	sphere1->setSpecularity(true);
+	sphere1->setShininess(10.0f);
+	sphere1->setTransparency(true);
+	sceneObjects.push_back(sphere1);
 
 
-    Sphere *sphere2 = new Sphere(glm::vec3(5.0, 5.0, -70), 4.0);
-    sphere2->setColor(glm::vec3(0.5, 1, 0.5));
-    sphere2->setShininess(20.0);
-//    sceneObjects.push_back(sphere2);
+    Sphere *sphere2 = new Sphere(glm::vec3(0.0, -5.0, -50), 4.0);
+    sphere2->setColor(glm::vec3(1, 1, 0));
+    sphere2->setRefractivity(true, 1.0f, 1.01f); // TODO what is diff between refraction coefficient and refractive index?? coefficient not used??
+    sceneObjects.push_back(sphere2);
 
     Sphere *sphere3 = new Sphere(glm::vec3(5.0, -10.0, -60), 5.0);
     sphere3->setColor(glm::vec3(1,1,1));
