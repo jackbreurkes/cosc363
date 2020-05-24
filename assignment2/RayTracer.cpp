@@ -12,6 +12,8 @@
 #include <glm/glm.hpp>
 #include "Sphere.h"
 #include "Cylinder.h"
+#include "Cone.h"
+#include "Torus.h"
 #include "SceneObject.h"
 #include "Ray.h"
 #include "Plane.h"
@@ -27,6 +29,8 @@ const float WIDTH = 20.0;
 const float HEIGHT = 20.0;
 const float EDIST = 40.0;
 const int NUMDIV = 600;
+const int ZOOM = 1;
+const bool AA = false; // TODO turn on
 const int MAX_STEPS = 5;
 const float XMIN = -WIDTH * 0.5;
 const float XMAX =  WIDTH * 0.5;
@@ -36,10 +40,14 @@ TextureBMP texture;
 
 vector<SceneObject*> sceneObjects;
 
-const int CHECKERED_PLANE_INDEX = 0;
+const int FLOOR_INDEX = 0;
+const int BACK_INDEX = 1;
+const int CYLINDER_INDEX = 2;
+const float CYLINDER_HEIGHT = 7.0;
+const float CYLINDER_CENTER_Y = -15.0;
 
 
-// TODO spotlight
+
 
 
 //---The most important function in a ray tracer! ---------------------------------- 
@@ -48,77 +56,137 @@ const int CHECKERED_PLANE_INDEX = 0;
 //----------------------------------------------------------------------------------
 glm::vec3 trace(Ray ray, int step)
 {
-	glm::vec3 backgroundCol(0);						//Background colour = (0,0,0)
-	glm::vec3 lightPos(10, 40, -3);					//Light's position
-	glm::vec3 color(0);
+	glm::vec3 backgroundCol(0, 0, 0.7);
+    glm::vec3 mainLightPos(40, 100, -80);
+    glm::vec3 spotlightPos(-30, 40, 100);
+	glm::vec3 spotlightDirection = glm::vec3(0, -15, -100) - spotlightPos;
+	float spotlightCutoff = 5.0 * (3.14 / 180.0);
+	spotlightDirection = glm::normalize(spotlightDirection);
+	glm::vec3 fullColor(0);
 	SceneObject* obj;
 
     ray.closestPt(sceneObjects);					//Compare the ray with all objects in the scene
     if(ray.index == -1) return backgroundCol;		//no intersection
 	obj = sceneObjects[ray.index];					//object on which the closest point of intersection is found
 
-    if (ray.index == CHECKERED_PLANE_INDEX) { // draw checkered plane
-        int stripeWidth = 5;
-        int iz = (ray.hit.z) / stripeWidth;
-        int ix = (ray.hit.x + 1000) / stripeWidth; // add 1000 so that ix is positive in this render
+    if (ray.index == FLOOR_INDEX) { // draw checkered plane
+        int squareSize = 5;
+        int iz = (ray.hit.z) / squareSize;
+        int ix = (ray.hit.x + 1000) / squareSize; // add 1000 so that ix is positive in this render
         int k = (iz + ix) % 2; // 2 colours
+        glm::vec3 floorColor(0);
         switch (k) {
             case 0:
-                color = glm::vec3(0, 1, 0);
+                floorColor = glm::vec3(0, 1, 0);
                 break;
             default:
-                color = glm::vec3(1, 1, 0.5);
+                floorColor = glm::vec3(1, 1, 0.5);
                 break;
         }
-        obj->setColor(color);
+        obj->setColor(floorColor);
     }
 
-	color = obj->lighting(lightPos, -ray.dir, ray.hit);	 // Object's colour
-	glm::vec3 lightVec = lightPos - ray.hit;
-	Ray shadowRay(ray.hit, lightVec);
+    if (ray.index == BACK_INDEX) { // draw checkered plane
+        int squareSize = 2;
+        int ix = (ray.hit.x + 1000.) / squareSize; // add 1000 so that ix is positive in this render
+        int iy = (ray.hit.y + 1000.) / squareSize; // add 1000 so that iy is positive in this render
+        int k = (ix + iy) % 2; // 2 colours
+        glm::vec3 backColor(0);
+        switch (k) {
+            case 0:
+                backColor = glm::vec3(1, 0.2, 0.2);
+                break;
+            default:
+                backColor = glm::vec3(0.2, 0.2, 1);
+                break;
+        }
+        obj->setColor(backColor);
+    }
 
-	shadowRay.closestPt(sceneObjects);
-	if (shadowRay.index != -1 && shadowRay.dist < glm::length(lightVec)) {
-	    float shadowScalar = 0.2f;
-	    if (sceneObjects[shadowRay.index]->isTransparent()) { // TODO if object is placed at the back, then shadow is brighter??
-	        shadowScalar = 0.7f;
-	    }
-	    color = glm::vec3(shadowScalar) * obj->getColor();
-	}
+    if (ray.index == CYLINDER_INDEX) { // texture the cylinder
+        float texcoords = std::acos(glm::dot(glm::vec3(0, 0, 1), obj->normal(ray.hit))) / (2.0 * 3.14);
+        if (ray.hit.x < 0) {
+            texcoords = 1.0f - texcoords;
+        }
+        float rows = 2.0;
+        float texcoordt = fmod((ray.hit.y - CYLINDER_CENTER_Y) / (CYLINDER_HEIGHT / rows), 1);
+        obj->setColor(texture.getColorAt(texcoords, texcoordt));
+    }
 
-	if (obj->isReflective() && step < MAX_STEPS) {
-	    float rho = obj->getReflectionCoeff();
-	    glm::vec3 normalVec = obj->normal(ray.hit);
-	    glm::vec3 reflectedDir = glm::reflect(ray.dir, normalVec);
-	    Ray reflectedRay(ray.hit, reflectedDir);
-	    glm::vec3 reflectedColor = trace(reflectedRay, step + 1); // reflection recursive call
-	    color = color + (rho * reflectedColor);
-	}
+    std::vector<glm::vec3> lights;
+    lights.push_back(mainLightPos);
+    lights.push_back(spotlightPos);
+    std::vector<float> lightScalars;
 
-	if (obj->isTransparent() && step < MAX_STEPS) { // TODO tutor help - weird spots at bottom of sphere; colouring the sphere; specular transparent objects?
-	    Ray transparencyRay(ray.hit, ray.dir);
-	    if (glm::dot(obj->normal(ray.hit), ray.dir) < 0) { // ray is going into the object
-	        color *= trace(transparencyRay, step + 1);
-	    } else { // ray out of the object
-	        color = trace(transparencyRay, step + 1);
-	    }
-	}
+    float lightDistanceSum = glm::distance(ray.hit, mainLightPos) + glm::distance(ray.hit, spotlightPos);
+    lightScalars.push_back( 1.0 - glm::distance(ray.hit, mainLightPos) / lightDistanceSum );
+    lightScalars.push_back( 1.0 - glm::distance(ray.hit, spotlightPos) / lightDistanceSum );
 
-	if (obj->isRefractive() && step < MAX_STEPS) {
-	    float eta = 1.0f / obj->getRefractiveIndex(); // refractive index of air is 1.0
-	    glm::vec3 normal = obj->normal(ray.hit);
-	    if (glm::dot(normal, ray.dir) < 0) { // ray is going into object
-	        glm::vec3 g = glm::refract(ray.dir, normal, eta);
-	        Ray refractionRay(ray.hit, g);
-	        color = trace(refractionRay, step + 1); // TODO doesn't care about old colour?
-	    } else { // ray is coming out of object
-	        glm::vec3 h = glm::refract(ray.dir, -normal, 1.0f/eta);
-	        Ray refractionRay(ray.hit, h);
-	        color = trace(refractionRay, step + 1);
-	    }
-	}
 
-	return color;
+    for (int i = 0; i < 2; i++) {
+
+
+        glm::vec3 lightPos = lights[i];
+        glm::vec3 color = glm::vec3(0);
+
+        color = obj->lighting(lightPos, -ray.dir, ray.hit);     // Object's colour
+        glm::vec3 lightVec = lightPos - ray.hit;
+        Ray shadowRay(ray.hit, lightVec);
+
+
+
+        shadowRay.closestPt(sceneObjects);
+        if (shadowRay.index != -1 && shadowRay.dist < glm::length(lightVec)) { // in shadow
+            float shadowScalar = 0.2f;
+            if (sceneObjects[shadowRay.index]->isTransparent() || sceneObjects[shadowRay.index]->isRefractive()) {
+                shadowScalar = 0.7f;
+            }
+            color = glm::vec3(shadowScalar) * color;
+        } else {
+            if (i == 1) { // spotlight light index
+                if (glm::dot(spotlightDirection, glm::normalize(-lightVec)) < glm::cos(spotlightCutoff)) {
+                    color = glm::vec3(0.2f) * color;
+                }
+            }
+        }
+
+        if (obj->isReflective() && step < MAX_STEPS) {
+            float rho = obj->getReflectionCoeff();
+            glm::vec3 normalVec = obj->normal(ray.hit);
+            glm::vec3 reflectedDir = glm::reflect(ray.dir, normalVec);
+            Ray reflectedRay(ray.hit, reflectedDir);
+            glm::vec3 reflectedColor = trace(reflectedRay, step + 1); // reflection recursive call
+            color = color + (rho * reflectedColor);
+        }
+
+        if (obj->isTransparent() && step < MAX_STEPS) {
+            Ray incidentRay(ray.hit, ray.dir);
+            incidentRay.closestPt(sceneObjects);
+            Ray exitingRay(incidentRay.hit, incidentRay.dir);
+            color += trace(exitingRay, step + 1); // TODO spotty ring around object?
+        }
+
+        if (obj->isRefractive() && step < MAX_STEPS) {
+            float eta = 1.0f / obj->getRefractiveIndex(); // refractive index of air is 1.0
+
+            // interior ray
+            glm::vec3 normal = obj->normal(ray.hit);
+            glm::vec3 g = glm::refract(ray.dir, normal, eta);
+            Ray interiorRay(ray.hit, g);
+            interiorRay.closestPt(sceneObjects);
+
+            // exiting ray
+            normal = obj->normal(interiorRay.hit);
+            glm::vec3 h = glm::refract(interiorRay.dir, -normal, 1.0f / eta);
+            Ray exitingRay(interiorRay.hit, h);
+            color += trace(exitingRay, step + 1);
+        }
+
+        fullColor += color * lightScalars[i];
+
+    }
+
+	return fullColor;
 }
 
 
@@ -177,8 +245,12 @@ void display()
 		{
 			yp = YMIN + j*cellY;
 
-            glm::vec3 col = getColorNoAntiAliasing(xp, yp, cellX, cellY, eye); // TODO turn on anti-aliasing
-//            glm::vec3 col = getColorWithAntiAliasing(xp, yp, cellX, cellY, eye);
+			glm::vec3 col;
+            if (AA) {
+                col = getColorWithAntiAliasing(xp, yp, cellX, cellY, eye);
+            } else {
+                col = getColorNoAntiAliasing(xp, yp, cellX, cellY, eye);
+            }
 
             glColor3f(col.r, col.g, col.b);
 
@@ -257,39 +329,96 @@ void initialize()
     glMatrixMode(GL_PROJECTION);
     gluOrtho2D(XMIN, XMAX, YMIN, YMAX);
 
-    texture = TextureBMP("Butterfly.bmp");
+    texture = TextureBMP("Wood.bmp");
 
     glClearColor(0, 0, 0, 1);
 
-    Plane *plane = new Plane (glm::vec3(-20., -15, -40), glm::vec3(20., -15, -40),
+    Plane *floor = new Plane (glm::vec3(-20., -15, -40), glm::vec3(20., -15, -40),
                               glm::vec3(20., -15, -200), glm::vec3(-20., -15, -200));
-    plane->setColor(glm::vec3(0.8, 0.8, 0));
-    plane->setSpecularity(false);
-    sceneObjects.push_back(plane); // index 0
+    floor->setColor(glm::vec3(0.8, 0.8, 0));
+    floor->setSpecularity(false);
+    sceneObjects.push_back(floor); // index 0
 
-    createCube(glm::vec3(-10., -10., -60.), 4.);
+    Plane *back = new Plane (glm::vec3(-20., -15, -200), glm::vec3(20., -15, -200),
+            glm::vec3(20., 15, -200), glm::vec3(-20., 15, -200));
+    back->setColor(glm::vec3(1, 0.2, 0));
+    back->setSpecularity(false);
+    sceneObjects.push_back(back); // index 1
 
-    Cylinder *cylinder1 = new Cylinder(glm::vec3(10.0, -15.0, -60.0), 2.5, 5.0); // TODO 1 mark
+    Cylinder *cylinder1 = new Cylinder(glm::vec3(0, CYLINDER_CENTER_Y, -80.0), 2, CYLINDER_HEIGHT);
     cylinder1->setColor(glm::vec3(0, 0, 1));   // Set colour to blue
-    cylinder1->setReflectivity(true, 0.8);
-    sceneObjects.push_back(cylinder1);
+//    cylinder1->setReflectivity(true, 0.3);
+//    cylinder1->setSpecularity(true);
+//    cylinder1->setShininess(10.0f);
+    sceneObjects.push_back(cylinder1); // index 2
 
-	Sphere *sphere1 = new Sphere(glm::vec3(0.0, 0.0, -120.0), 15.0);
-	sphere1->setColor(glm::vec3(1, 1, 0));
+    //    Plane *roof = new Plane (glm::vec3(-50., 40, -200), glm::vec3(50., 40, -200),
+//            glm::vec3(50., 40, -40), glm::vec3(-50., 40, -40));
+//    roof->setColor(glm::vec3(0.8, 0.8, 0));
+//    roof->setSpecularity(false);
+//    sceneObjects.push_back(roof); // index 3
+
+
+    Cone *cone1 = new Cone(glm::vec3(-5, -15, -70), 1, 4);
+    cone1->setColor(glm::vec3(0.9, 0.6, 0.6));
+    sceneObjects.push_back(cone1);
+//    createCube(glm::vec3(-5., -10., -70.), 2.);
+
+    Cone *cone2 = new Cone(glm::vec3(5, -15, -70), 1, 4);
+    cone2->setColor(glm::vec3(0.9, 0.6, 0.6));
+    sceneObjects.push_back(cone2);
+    createCube(glm::vec3(5., -10., -70.), 2.);
+
+    Cone *cone3 = new Cone(glm::vec3(10, -15, -90), 1.5, 7);
+    cone3->setColor(glm::vec3(0.9, 0.6, 0.6));
+    sceneObjects.push_back(cone3);
+    createCube(glm::vec3(10., -6., -90.), 4.);
+
+    Cone *cone4 = new Cone(glm::vec3(-10, -15, -90), 1.5, 7);
+    cone4->setColor(glm::vec3(0.9, 0.6, 0.6));
+    sceneObjects.push_back(cone4);
+    createCube(glm::vec3(-10., -6., -90.), 4.);
+
+
+	Sphere *sphere1 = new Sphere(glm::vec3(-5.0, -9.5, -70.0), 1.5); // transparent sphere
+	sphere1->setColor(glm::vec3(0.2, 0.2, 0.2));
 	sphere1->setSpecularity(true);
 	sphere1->setShininess(10.0f);
 	sphere1->setTransparency(true);
+    sphere1->setReflectivity(true, 0.1f); // transparent objects should be reflective
 	sceneObjects.push_back(sphere1);
 
+    Plane *backLeft = new Plane (glm::vec3(-40., -15, -197), glm::vec3(-20., -15, -200),
+                                 glm::vec3(-20., 15, -200), glm::vec3(-40., 15, -197));
+    backLeft->setColor(glm::vec3(0.1));
+    backLeft->setSpecularity(false);
+    backLeft->setReflectivity(true, 1.0);
+    sceneObjects.push_back(backLeft);
 
-    Sphere *sphere2 = new Sphere(glm::vec3(0.0, -5.0, -50), 4.0);
-    sphere2->setColor(glm::vec3(1, 1, 0));
-    sphere2->setRefractivity(true, 1.0f, 1.01f); // TODO what is diff between refraction coefficient and refractive index?? coefficient not used??
+    Plane *backRight = new Plane (glm::vec3(40., 15, -197), glm::vec3(20., 15, -200),
+    glm::vec3(20., -15, -200), glm::vec3(40., -15, -197));
+    backRight->setColor(glm::vec3(0.1));
+    backRight->setSpecularity(false);
+    backRight->setReflectivity(true, 1.0);
+    sceneObjects.push_back(backRight);
+
+	Torus *torus1 = new Torus(glm::vec3(0, -0, -1), 2, 0.1);
+	torus1->setColor(glm::vec3(1));
+	torus1->setSpecularity(false);
+	torus1->setReflectivity(false);
+//	sceneObjects.push_back(torus1);
+
+    Sphere *sphere2 = new Sphere(glm::vec3(0, -5.0, -80), 3.0); // refractive sphere
+    sphere2->setColor(glm::vec3(0, 0, 0));
+    sphere2->setRefractivity(true, 1.0, 1.01);
+    sphere2->setReflectivity(true, 0.1); // refractive objects should be reflective
     sceneObjects.push_back(sphere2);
 
-    Sphere *sphere3 = new Sphere(glm::vec3(5.0, -10.0, -60), 5.0);
+
+    Sphere *sphere3 = new Sphere(glm::vec3(-5.0, -5.0, -70), 5.0);
     sphere3->setColor(glm::vec3(1,1,1));
     sphere3->setSpecularity(false);
+    sphere3->setReflectivity(true);
 //    sceneObjects.push_back(sphere3);
 
     Sphere *sphere4 = new Sphere(glm::vec3(10.0, 10.0, -60.0), 3.0);
@@ -302,7 +431,7 @@ void initialize()
 int main(int argc, char *argv[]) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB );
-    glutInitWindowSize(600, 600);
+    glutInitWindowSize(NUMDIV * ZOOM, NUMDIV * ZOOM);
     glutInitWindowPosition(20, 20);
     glutCreateWindow("Raytracing");
 

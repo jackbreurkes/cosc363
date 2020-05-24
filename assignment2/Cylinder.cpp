@@ -20,6 +20,14 @@ float Cylinder::intersect(glm::vec3 p0, glm::vec3 dir)
 
     float t1 = (-b - sqrt(discriminant)) / (2.0f * a);
     float t2 = (-b + sqrt(discriminant)) / (2.0f * a);
+
+    if(fabs(t1)<0.01){
+        t1=-1;
+    }
+    if(fabs(t2)<0.01){
+        t2=-1;
+    }
+
     if (t2 < t1) {
         float temp = t1;
         t1 = t2;

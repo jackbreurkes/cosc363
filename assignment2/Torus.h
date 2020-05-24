@@ -1,27 +1,27 @@
 //
-// Created by Jack Breurkes on 5/05/20.
+// Created by Jack Breurkes on 23/05/20.
 //
 
-#ifndef H_CONE
-#define H_CONE
+#ifndef H_TORUS
+#define H_TORUS
 #include <glm/glm.hpp>
 #include "SceneObject.h"
 
 
 /**
- * defines a cone located at center
+ * defines a torus located at a point center
  */
-class Cone : public SceneObject {
+class Torus : public SceneObject {
 
 private:
     glm::vec3 center = glm::vec3(0);
-    float radius = 1;
-    float height = 1;
+    float majorRadius = 5; // distance from center of hole to center of tube
+    float minorRadius = 1; // radius of tube
 
 public:
-    Cone() {};  //Default constructor creates a unit cone at the origin
+    Torus() {};  //Default constructor creates a unit cone at the origin
 
-    Cone(glm::vec3 c, float r, float h) : center(c), radius(r), height(h) {}
+    Torus(glm::vec3 c, float R, float r) : center(c), majorRadius(R), minorRadius(r) {}
 
     float intersect(glm::vec3 p0, glm::vec3 dir);
 
@@ -29,4 +29,4 @@ public:
 
 };
 
-#endif //!H_CONE
+#endif //!H_TORUS
