@@ -28,10 +28,10 @@ using namespace std;
 const float WIDTH = 20.0;  
 const float HEIGHT = 20.0;
 const float EDIST = 40.0;
-const int NUMDIV = 600;
+const int NUMDIV = 1000;
 const int ZOOM = 1;
-const bool AA = false; // TODO turn on
-const int MAX_STEPS = 5;
+const bool AA = true;
+const int MAX_STEPS = 10;
 const float XMIN = -WIDTH * 0.5;
 const float XMAX =  WIDTH * 0.5;
 const float YMIN = -HEIGHT * 0.5;
@@ -325,8 +325,8 @@ void initialize()
     floor->setSpecularity(false);
     sceneObjects.push_back(floor); // index 0
 
-    Plane *back = new Plane (glm::vec3(-20., -15, -200), glm::vec3(20., -15, -200),
-            glm::vec3(20., 15, -200), glm::vec3(-20., 15, -200));
+    Plane *back = new Plane (glm::vec3(-3, -15, -200), glm::vec3(3, -15, -200),
+            glm::vec3(3, 15, -200), glm::vec3(-3, 15, -200));
     back->setColor(glm::vec3(1, 0.2, 0));
     back->setSpecularity(false);
     sceneObjects.push_back(back); // index 1
@@ -364,15 +364,15 @@ void initialize()
     sphere1->setReflectivity(true, 0.1f);
 	sceneObjects.push_back(sphere1);
 
-    Plane *backLeft = new Plane (glm::vec3(-40., -15, -197), glm::vec3(-20., -15, -200),
-                                 glm::vec3(-20., 15, -200), glm::vec3(-40., 15, -197));
+    Plane *backLeft = new Plane (glm::vec3(-40., -15, -197), glm::vec3(-3., -15, -200),
+                                 glm::vec3(-3., 15, -200), glm::vec3(-40., 15, -197));
     backLeft->setColor(glm::vec3(0.1));
     backLeft->setSpecularity(false);
     backLeft->setReflectivity(true, 1.0);
     sceneObjects.push_back(backLeft);
 
-    Plane *backRight = new Plane (glm::vec3(40., 15, -197), glm::vec3(20., 15, -200),
-    glm::vec3(20., -15, -200), glm::vec3(40., -15, -197));
+    Plane *backRight = new Plane (glm::vec3(40., 15, -197), glm::vec3(3., 15, -200),
+    glm::vec3(3., -15, -200), glm::vec3(40., -15, -197));
     backRight->setColor(glm::vec3(0.1));
     backRight->setSpecularity(false);
     backRight->setReflectivity(true, 1.0);
