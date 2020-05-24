@@ -163,7 +163,7 @@ glm::vec3 trace(Ray ray, int step)
             Ray incidentRay(ray.hit, ray.dir);
             incidentRay.closestPt(sceneObjects);
             Ray exitingRay(incidentRay.hit, incidentRay.dir);
-            color += trace(exitingRay, step + 1); // TODO spotty ring around object?
+            color += trace(exitingRay, step + 1);
         }
 
         if (obj->isRefractive() && step < MAX_STEPS) {
@@ -294,20 +294,6 @@ void createCube(glm::vec3 center, float size=1, glm::vec3 color = glm::vec3(0.8,
     back->setColor(color);
     front->setColor(color);
 
-//    top->setReflectivity(reflectivity);
-//    bottom->setReflectivity(reflectivity);
-//    left->setReflectivity(reflectivity);
-//    right->setReflectivity(reflectivity);
-//    back->setReflectivity(reflectivity);
-//    front->setReflectivity(reflectivity);
-//
-//    top->setSpecularity(specularity);
-//    bottom->setSpecularity(specularity);
-//    left->setSpecularity(specularity);
-//    right->setSpecularity(specularity);
-//    back->setSpecularity(specularity);
-//    front->setSpecularity(specularity);
-
     sceneObjects.push_back(top);
     sceneObjects.push_back(bottom);
     sceneObjects.push_back(left);
@@ -346,23 +332,13 @@ void initialize()
     sceneObjects.push_back(back); // index 1
 
     Cylinder *cylinder1 = new Cylinder(glm::vec3(0, CYLINDER_CENTER_Y, -80.0), 2, CYLINDER_HEIGHT);
-    cylinder1->setColor(glm::vec3(0, 0, 1));   // Set colour to blue
-//    cylinder1->setReflectivity(true, 0.3);
-//    cylinder1->setSpecularity(true);
-//    cylinder1->setShininess(10.0f);
+    cylinder1->setColor(glm::vec3(0, 0, 1));
+    cylinder1->setSpecularity(false);
     sceneObjects.push_back(cylinder1); // index 2
 
-    //    Plane *roof = new Plane (glm::vec3(-50., 40, -200), glm::vec3(50., 40, -200),
-//            glm::vec3(50., 40, -40), glm::vec3(-50., 40, -40));
-//    roof->setColor(glm::vec3(0.8, 0.8, 0));
-//    roof->setSpecularity(false);
-//    sceneObjects.push_back(roof); // index 3
-
-
-    Cone *cone1 = new Cone(glm::vec3(-5, -15, -70), 1, 4);
+    Cone *cone1 = new Cone(glm::vec3(-5, -15, -70), 1, 4); // airhead
     cone1->setColor(glm::vec3(0.9, 0.6, 0.6));
     sceneObjects.push_back(cone1);
-//    createCube(glm::vec3(-5., -10., -70.), 2.);
 
     Cone *cone2 = new Cone(glm::vec3(5, -15, -70), 1, 4);
     cone2->setColor(glm::vec3(0.9, 0.6, 0.6));
@@ -385,7 +361,7 @@ void initialize()
 	sphere1->setSpecularity(true);
 	sphere1->setShininess(10.0f);
 	sphere1->setTransparency(true);
-    sphere1->setReflectivity(true, 0.1f); // transparent objects should be reflective
+    sphere1->setReflectivity(true, 0.1f);
 	sceneObjects.push_back(sphere1);
 
     Plane *backLeft = new Plane (glm::vec3(-40., -15, -197), glm::vec3(-20., -15, -200),
@@ -402,7 +378,7 @@ void initialize()
     backRight->setReflectivity(true, 1.0);
     sceneObjects.push_back(backRight);
 
-	Torus *torus1 = new Torus(glm::vec3(0, -0, -1), 2, 0.1);
+	Torus *torus1 = new Torus(glm::vec3(0, -0, 0), 2, 0.1);
 	torus1->setColor(glm::vec3(1));
 	torus1->setSpecularity(false);
 	torus1->setReflectivity(false);
@@ -411,20 +387,8 @@ void initialize()
     Sphere *sphere2 = new Sphere(glm::vec3(0, -5.0, -80), 3.0); // refractive sphere
     sphere2->setColor(glm::vec3(0, 0, 0));
     sphere2->setRefractivity(true, 1.0, 1.01);
-    sphere2->setReflectivity(true, 0.1); // refractive objects should be reflective
+    sphere2->setReflectivity(true, 0.1);
     sceneObjects.push_back(sphere2);
-
-
-    Sphere *sphere3 = new Sphere(glm::vec3(-5.0, -5.0, -70), 5.0);
-    sphere3->setColor(glm::vec3(1,1,1));
-    sphere3->setSpecularity(false);
-    sphere3->setReflectivity(true);
-//    sceneObjects.push_back(sphere3);
-
-    Sphere *sphere4 = new Sphere(glm::vec3(10.0, 10.0, -60.0), 3.0);
-    sphere4->setColor(glm::vec3(1, 0, 0));
-//    sceneObjects.push_back(sphere4);
-
 }
 
 
