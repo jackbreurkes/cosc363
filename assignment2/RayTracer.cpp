@@ -134,7 +134,6 @@ glm::vec3 trace(Ray ray, int step)
         Ray shadowRay(ray.hit, lightVec);
 
 
-
         shadowRay.closestPt(sceneObjects);
         if (shadowRay.index != -1 && shadowRay.dist < glm::length(lightVec)) { // in shadow
             float shadowScalar = 0.2f;
@@ -163,7 +162,7 @@ glm::vec3 trace(Ray ray, int step)
             Ray incidentRay(ray.hit, ray.dir);
             incidentRay.closestPt(sceneObjects);
             Ray exitingRay(incidentRay.hit, incidentRay.dir);
-            color += trace(exitingRay, step + 1);
+            color += trace(exitingRay, step + 1) * obj->getTransparencyCoeff();
         }
 
         if (obj->isRefractive() && step < MAX_STEPS) {
@@ -179,7 +178,7 @@ glm::vec3 trace(Ray ray, int step)
             normal = obj->normal(interiorRay.hit);
             glm::vec3 h = glm::refract(interiorRay.dir, -normal, 1.0f / eta);
             Ray exitingRay(interiorRay.hit, h);
-            color += trace(exitingRay, step + 1);
+            color += obj->getRefractionCoeff() * trace(exitingRay, step + 1);
         }
 
         fullColor += color * lightScalars[i];
@@ -355,12 +354,11 @@ void initialize()
     sceneObjects.push_back(cone4);
     createCube(glm::vec3(-10., -6., -90.), 4.);
 
-
 	Sphere *sphere1 = new Sphere(glm::vec3(-5.0, -9.5, -70.0), 1.5); // transparent sphere
-	sphere1->setColor(glm::vec3(0.2, 0.2, 0.2));
+	sphere1->setColor(glm::vec3(0.8));
 	sphere1->setSpecularity(true);
 	sphere1->setShininess(10.0f);
-	sphere1->setTransparency(true);
+	sphere1->setTransparency(true, 0.2f);
     sphere1->setReflectivity(true, 0.1f);
 	sceneObjects.push_back(sphere1);
 
@@ -385,8 +383,8 @@ void initialize()
 //	sceneObjects.push_back(torus1);
 
     Sphere *sphere2 = new Sphere(glm::vec3(0, -5.0, -80), 3.0); // refractive sphere
-    sphere2->setColor(glm::vec3(0, 0, 0));
-    sphere2->setRefractivity(true, 1.0, 1.01);
+    sphere2->setColor(glm::vec3(0.2));
+    sphere2->setRefractivity(true, 0.8, 1.01);
     sphere2->setReflectivity(true, 0.1);
     sceneObjects.push_back(sphere2);
 }
