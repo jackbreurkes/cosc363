@@ -135,10 +135,14 @@ glm::vec3 trace(Ray ray, int step)
 
 
         shadowRay.closestPt(sceneObjects);
+        SceneObject* shadowObject = sceneObjects[shadowRay.index];
         if (shadowRay.index != -1 && shadowRay.dist < glm::length(lightVec)) { // in shadow
             float shadowScalar = 0.2f;
-            if (sceneObjects[shadowRay.index]->isTransparent() || sceneObjects[shadowRay.index]->isRefractive()) {
-                shadowScalar = 0.7f;
+            if (shadowObject->isTransparent()) {
+                shadowScalar += 0.8f * sqrt(shadowObject->getTransparencyCoeff());
+                // sqrt gives lighter shadows for lower coeffs, but still maps values [0, 1] -> [0, 1]
+            } else if (shadowObject->isRefractive()) {
+                shadowScalar += 0.8f * sqrt(shadowObject->getRefractionCoeff());
             }
             color = glm::vec3(shadowScalar) * color;
         } else {
@@ -355,7 +359,7 @@ void initialize()
     createCube(glm::vec3(-10., -6., -90.), 4.);
 
 	Sphere *sphere1 = new Sphere(glm::vec3(-5.0, -9.5, -70.0), 1.5); // transparent sphere
-	sphere1->setColor(glm::vec3(0.8));
+	sphere1->setColor(glm::vec3(0.5));
 	sphere1->setSpecularity(true);
 	sphere1->setShininess(10.0f);
 	sphere1->setTransparency(true, 0.2f);
