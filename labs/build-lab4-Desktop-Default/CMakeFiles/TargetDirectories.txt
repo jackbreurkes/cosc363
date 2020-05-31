@@ -1,4 +1,0 @@
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default/CMakeFiles/edit_cache.dir
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default/CMakeFiles/Boat.out.dir
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default/CMakeFiles/rebuild_cache.dir
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab4-Desktop-Default/CMakeFiles/Vase.out.dir

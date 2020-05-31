@@ -1,4 +1,0 @@
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab2-Desktop-Debug/CMakeFiles/edit_cache.dir
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab2-Desktop-Debug/CMakeFiles/Cannon.out.dir
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab2-Desktop-Debug/CMakeFiles/rebuild_cache.dir
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab2-Desktop-Debug/CMakeFiles/Humanoid.out.dir

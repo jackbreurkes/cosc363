@@ -1,4 +1,0 @@
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab1-Desktop-Default/CMakeFiles/rebuild_cache.dir
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab1-Desktop-Default/CMakeFiles/edit_cache.dir
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab1-Desktop-Default/CMakeFiles/Teapot.out.dir
-/home/cosc/student/jsv22/labs/cosc363/labs/build-lab1-Desktop-Default/CMakeFiles/Model3d.out.dir
